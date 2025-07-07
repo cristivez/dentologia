@@ -18,15 +18,17 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  width: 100vw;
-  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 100vw;
+  padding: 2rem 4vw;
+  box-sizing: border-box;
 }
 .logo-container {
   margin-bottom: 2rem;
 }
 .main-logo {
-  width: 200px;
-  height: 200px;
+  width: min(60vw, 200px);
+  height: min(60vw, 200px);
   border-radius: 50%;
   box-shadow: 0 4px 32px 0 rgba(0,0,0,0.12);
   background: #6b706d;
@@ -49,24 +51,28 @@ body {
   margin: 2rem 0 1rem 0;
   background: rgba(107,112,109,0.7);
   border-radius: 1rem;
-  padding: 1.2rem 2rem;
+  padding: 1.2rem 5vw;
   font-size: 1.1rem;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
   color: #e5dbc0;
-  max-width: 90vw;
+  max-width: 100%;
+  width: 100%;
   line-height: 1.7;
   text-align: center;
+  box-sizing: border-box;
 }
 .our-services {
   margin: 2rem 0 0 0;
   background: rgba(107,112,109,0.7);
   border-radius: 1rem;
-  padding: 1.2rem 2rem;
+  padding: 1.2rem 5vw;
   font-size: 1.1rem;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
   color: #e5dbc0;
-  max-width: 90vw;
+  max-width: 100%;
+  width: 100%;
   text-align: center;
+  box-sizing: border-box;
 }
 .our-services h2 {
   margin-top: 0;
@@ -167,15 +173,18 @@ body {
 .services {
   padding: 3rem 0 3rem 0;
   background: rgba(107,112,109,0.15);
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 .services .container {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+  padding: 0 4vw;
+  box-sizing: border-box;
 }
 .section-header {
   margin-bottom: 2rem;
@@ -195,6 +204,8 @@ body {
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 .service-card {
   background: #6b706d;
@@ -202,11 +213,13 @@ body {
   padding: 2rem 1.5rem;
   box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
   color: #e5dbc0;
-  min-width: 280px;
+  min-width: 0;
   max-width: 340px;
+  width: 100%;
   flex: 1 1 300px;
   transition: transform 0.2s, box-shadow 0.2s;
   border: 1px solid #e5dbc0;
+  box-sizing: border-box;
 }
 .service-card:hover {
   transform: translateY(-8px) scale(1.03);
@@ -254,14 +267,36 @@ body {
   font-size: 1.1rem;
 }
 @media (max-width: 900px) {
+  .main-section, .contact-details, .our-services, .services .container {
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
   .services-grid {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: 1.5rem;
+    width: 100%;
   }
   .service-card {
-    max-width: 95vw;
+    max-width: 100%;
     min-width: 0;
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .main-section, .contact-details, .our-services, .services .container {
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+  .main-logo {
+    width: min(90vw, 160px);
+    height: min(90vw, 160px);
+  }
+  .service-card {
+    padding: 1.2rem 0.7rem;
+  }
+  .services {
+    padding: 2rem 0 2rem 0;
   }
 }
 
