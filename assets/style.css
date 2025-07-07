@@ -1,0 +1,392 @@
+/* Dentologia - Coming Soon Page Styles */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #6b706d; /* main logo background */
+  color: #e5dbc0; /* logo accent */
+  font-family: 'Montserrat', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 2rem 1rem;
+}
+.logo-container {
+  margin-bottom: 2rem;
+}
+.main-logo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.12);
+  background: #6b706d;
+  display: block;
+}
+.site-title {
+  font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem 0;
+  color: #e5dbc0;
+  text-align: center;
+}
+.subtitle {
+  font-size: 1.3rem;
+  color: #e5dbc0;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.contact-details {
+  margin: 2rem 0 1rem 0;
+  background: rgba(107,112,109,0.7);
+  border-radius: 1rem;
+  padding: 1.2rem 2rem;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+  color: #e5dbc0;
+  max-width: 90vw;
+  line-height: 1.7;
+  text-align: center;
+}
+.our-services {
+  margin: 2rem 0 0 0;
+  background: rgba(107,112,109,0.7);
+  border-radius: 1rem;
+  padding: 1.2rem 2rem;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+  color: #e5dbc0;
+  max-width: 90vw;
+  text-align: center;
+}
+.our-services h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #e5dbc0;
+}
+.our-services ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.our-services li {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+/* Work in progress animation */
+.wip-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  min-height: 60px;
+  gap: 1.5rem;
+}
+.wip-animation .tooth {
+  width: 32px;
+  height: 40px;
+  border-radius: 0 0 16px 16px/0 0 32px 32px;
+  background: #e5dbc0;
+  position: relative;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  animation: tooth-bounce 1.2s infinite cubic-bezier(.68,-0.55,.27,1.55);
+}
+.wip-animation .bar {
+  width: 60px;
+  height: 8px;
+  background: #e5dbc0;
+  border-radius: 4px;
+  position: relative;
+  top: 12px;
+  animation: bar-move 1.2s infinite linear;
+}
+.wip-animation .gear {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 6px solid #e5dbc0;
+  border-top: 6px solid #6b706d;
+  box-sizing: border-box;
+  animation: gear-spin 1.2s linear infinite;
+}
+.wip-animation .dots {
+  width: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  top: 10px;
+}
+.wip-animation .dots:before, .wip-animation .dots:after, .wip-animation .dots span {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #e5dbc0;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: dot-blink 1.2s infinite alternate;
+}
+.wip-animation .dots:after {
+  animation-delay: 0.4s;
+}
+.wip-animation .dots span {
+  animation-delay: 0.8s;
+}
+@keyframes tooth-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+@keyframes bar-move {
+  0% { left: 0; }
+  50% { left: 20px; }
+  100% { left: 0; }
+}
+@keyframes gear-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes dot-blink {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.2; }
+}
+
+/* Services Section */
+
+/* Services Section - Dentologia custom theme */
+.services {
+  padding: 3rem 0 3rem 0;
+  background: rgba(107,112,109,0.15);
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.services .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.section-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.section-header h2 {
+  color: #e5dbc0;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.section-header p {
+  color: #e5dbc0;
+  font-size: 1.1rem;
+}
+.services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+.service-card {
+  background: #6b706d;
+  border-radius: 1.2rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+  color: #e5dbc0;
+  min-width: 280px;
+  max-width: 340px;
+  flex: 1 1 300px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e5dbc0;
+}
+.service-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+}
+.service-icon {
+  background: #e5dbc0;
+  color: #6b706d;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem auto;
+  font-size: 2rem;
+}
+.service-card h3 {
+  margin-bottom: 0.7rem;
+  color: #e5dbc0;
+  font-size: 1.3rem;
+}
+.service-card p {
+  margin-bottom: 1.1rem;
+  color: #e5dbc0;
+  font-size: 1.05rem;
+}
+.service-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.service-features li {
+  padding: 0.3rem 0 0.3rem 1.5rem;
+  color: #e5dbc0;
+  position: relative;
+  font-size: 1rem;
+}
+.service-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #e5dbc0;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+@media (max-width: 900px) {
+  .services-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .service-card {
+    max-width: 95vw;
+    min-width: 0;
+  }
+}
+
+.logo {
+  width: 220px;
+  height: 220px;
+  margin-bottom: 2rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.12);
+  background: #6b706d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem 0;
+  color: #e5dbc0;
+}
+
+p {
+  font-size: 1.3rem;
+  color: #e5dbc0;
+  margin-bottom: 2rem;
+}
+
+.footer {
+  position: fixed;
+  bottom: 1.5rem;
+  width: 100vw;
+  text-align: center;
+  color: #e5dbc0;
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.clinic-details {
+  margin: 2rem 0 1rem 0;
+  background: rgba(107,112,109,0.7);
+  border-radius: 1rem;
+  padding: 1.2rem 2rem;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+  color: #e5dbc0;
+  max-width: 90vw;
+  line-height: 1.7;
+}
+
+/* Work in progress animation */
+.wip-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  min-height: 60px;
+  gap: 1.5rem;
+}
+.wip-animation .tooth {
+  width: 32px;
+  height: 40px;
+  border-radius: 0 0 16px 16px/0 0 32px 32px;
+  background: #e5dbc0;
+  position: relative;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  animation: tooth-bounce 1.2s infinite cubic-bezier(.68,-0.55,.27,1.55);
+}
+.wip-animation .bar {
+  width: 60px;
+  height: 8px;
+  background: #e5dbc0;
+  border-radius: 4px;
+  position: relative;
+  top: 12px;
+  animation: bar-move 1.2s infinite linear;
+}
+.wip-animation .gear {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 6px solid #e5dbc0;
+  border-top: 6px solid #6b706d;
+  box-sizing: border-box;
+  animation: gear-spin 1.2s linear infinite;
+}
+.wip-animation .dots {
+  width: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  top: 10px;
+}
+.wip-animation .dots:before, .wip-animation .dots:after, .wip-animation .dots span {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #e5dbc0;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: dot-blink 1.2s infinite alternate;
+}
+.wip-animation .dots:after {
+  animation-delay: 0.4s;
+}
+.wip-animation .dots span {
+  animation-delay: 0.8s;
+}
+
+@keyframes tooth-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+@keyframes bar-move {
+  0% { left: 0; }
+  50% { left: 20px; }
+  100% { left: 0; }
+}
+@keyframes gear-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes dot-blink {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.2; }
+}
