@@ -79,13 +79,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Build index of all prices from all category tables
     var priceIndex = [];
     var categoryNames = {
-      'price-general': 'Consultatii',
+      'price-general': 'Consultații',
       'price-profilaxie': 'Profilaxie',
       'price-odontoterapie': 'Odontoterapie',
       'price-endodontie': 'Endodontie',
       'price-chirurgie': 'Chirurgie',
-      'price-ortodontie': 'Ortodontie',
-      'price-protetica': 'Protetica'
+      'price-ortodontie': 'Ortodonție',
+      'price-protetica': 'Protetică'
     };
 
     document.querySelectorAll('.price-category').forEach(function (cat) {
@@ -102,6 +102,18 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
+    // Diacritic-aware highlight: walks through the original string
+    // and marks the substring that matches the normalized query
+    function highlightMatch(original, normalizedQuery) {
+      var norm = normalize(original);
+      var idx = norm.indexOf(normalizedQuery);
+      if (idx === -1) return original;
+      var before = original.substring(0, idx);
+      var match = original.substring(idx, idx + normalizedQuery.length);
+      var after = original.substring(idx + normalizedQuery.length);
+      return before + '<mark>' + match + '</mark>' + after;
+    }
+
     var debounceTimer;
     priceSearch.addEventListener('input', function () {
       clearTimeout(debounceTimer);
@@ -115,13 +127,13 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
-        // Normalize Romanian characters for search
+        // Normalize Romanian diacritics for search (works with or without diacritics)
         var normalize = function (str) {
           return str.toLowerCase()
-            .replace(/[ăâ]/g, 'a')
-            .replace(/[îi]/g, 'i')
-            .replace(/[ș]/g, 's')
-            .replace(/[ț]/g, 't');
+            .replace(/[ăâã]/g, 'a')
+            .replace(/[î]/g, 'i')
+            .replace(/[șş]/g, 's')
+            .replace(/[țţ]/g, 't');
         };
 
         var normalizedQuery = normalize(query);
@@ -142,9 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
               searchTable.appendChild(catRow);
             }
             var row = document.createElement('tr');
-            // Highlight matching text
-            var regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-            var highlighted = item.service.replace(regex, '<mark>$1</mark>');
+            // Highlight matching text (diacritic-aware)
+            var highlighted = highlightMatch(item.service, normalizedQuery);
             row.innerHTML = '<td>' + highlighted + '</td><td>' + item.price + '</td>';
             searchTable.appendChild(row);
           });
