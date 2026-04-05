@@ -1,34 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // --- Mobile menu ---
-  var menuBtn = document.getElementById('mobileMenuBtn');
-  var navMenu = document.getElementById('navMenu');
-
-  if (menuBtn && navMenu) {
-    menuBtn.addEventListener('click', function () {
-      var isOpen = navMenu.classList.toggle('active');
-      menuBtn.classList.toggle('active');
-      menuBtn.setAttribute('aria-expanded', isOpen);
-    });
-
-    // Close menu when a nav link is clicked
-    navMenu.querySelectorAll('.nav-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        navMenu.classList.remove('active');
-        menuBtn.classList.remove('active');
-        menuBtn.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    // Close menu on Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        menuBtn.classList.remove('active');
-        menuBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
   // --- Header hide/show on scroll ---
   var header = document.getElementById('header');
   var lastScrollY = 0;
@@ -102,6 +72,15 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
+    // Normalize Romanian diacritics for search (works with or without diacritics)
+    function normalize(str) {
+      return str.toLowerCase()
+        .replace(/[ăâã]/g, 'a')
+        .replace(/[î]/g, 'i')
+        .replace(/[șş]/g, 's')
+        .replace(/[țţ]/g, 't');
+    }
+
     // Diacritic-aware highlight: walks through the original string
     // and marks the substring that matches the normalized query
     function highlightMatch(original, normalizedQuery) {
@@ -126,15 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
           noResults.style.display = 'none';
           return;
         }
-
-        // Normalize Romanian diacritics for search (works with or without diacritics)
-        var normalize = function (str) {
-          return str.toLowerCase()
-            .replace(/[ăâã]/g, 'a')
-            .replace(/[î]/g, 'i')
-            .replace(/[șş]/g, 's')
-            .replace(/[țţ]/g, 't');
-        };
 
         var normalizedQuery = normalize(query);
         var matches = priceIndex.filter(function (item) {
@@ -206,5 +176,124 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }, { passive: true });
+  }
+
+  // --- Reviews Carousel (native scroll-snap) ---
+  var carousel = document.getElementById('reviewsCarousel');
+  var progressFill = document.getElementById('carouselProgress');
+  var prevBtn = document.getElementById('carouselPrev');
+  var nextBtn = document.getElementById('carouselNext');
+
+  if (carousel && progressFill) {
+    // Update progress bar on scroll
+    function updateProgress() {
+      var maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      var pct = maxScroll > 0 ? (carousel.scrollLeft / maxScroll) * 100 : 0;
+      progressFill.style.width = Math.max(10, pct) + '%';
+    }
+
+    carousel.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // Arrow buttons
+    function getScrollAmount() {
+      var card = carousel.querySelector('.review-card');
+      return card ? card.offsetWidth + 20 : 300; // card width + gap
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () {
+        carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        resetAutoScroll();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        resetAutoScroll();
+      });
+    }
+
+    // Desktop drag-to-scroll
+    var isDragging = false;
+    var startX = 0;
+    var scrollStart = 0;
+
+    carousel.addEventListener('mousedown', function (e) {
+      isDragging = true;
+      startX = e.pageX;
+      scrollStart = carousel.scrollLeft;
+      carousel.style.scrollBehavior = 'auto';
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      carousel.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (isDragging) {
+        isDragging = false;
+        carousel.style.scrollBehavior = 'smooth';
+      }
+    });
+
+    // Auto-scroll
+    var autoInterval;
+    var isPaused = false;
+
+    function autoScroll() {
+      if (isPaused) return;
+      var maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (carousel.scrollLeft >= maxScroll - 5) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+      }
+    }
+
+    function startAutoScroll() {
+      autoInterval = setInterval(autoScroll, 5000);
+    }
+
+    function resetAutoScroll() {
+      clearInterval(autoInterval);
+      startAutoScroll();
+    }
+
+    // Pause on hover / touch
+    carousel.addEventListener('mouseenter', function () { isPaused = true; });
+    carousel.addEventListener('mouseleave', function () { isPaused = false; });
+    carousel.addEventListener('touchstart', function () { isPaused = true; }, { passive: true });
+    carousel.addEventListener('touchend', function () {
+      setTimeout(function () { isPaused = false; }, 3000);
+    }, { passive: true });
+
+    startAutoScroll();
+  }
+
+  // --- Floating contact button ---
+  var floatContact = document.getElementById('floatContact');
+  var floatBtn = document.getElementById('floatContactBtn');
+
+  if (floatContact && floatBtn) {
+    floatBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      floatContact.classList.toggle('active');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!floatContact.contains(e.target)) {
+        floatContact.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        floatContact.classList.remove('active');
+      }
+    });
   }
 });
