@@ -274,6 +274,22 @@ document.addEventListener('DOMContentLoaded', function () {
     startAutoScroll();
   }
 
+  // --- FAQ accordion (close others when opening one) ---
+  var faqItems = document.querySelectorAll('.faq-item');
+  if (faqItems.length) {
+    faqItems.forEach(function (item) {
+      item.addEventListener('toggle', function () {
+        if (item.open) {
+          faqItems.forEach(function (other) {
+            if (other !== item && other.open) {
+              other.open = false;
+            }
+          });
+        }
+      });
+    });
+  }
+
   // --- Floating contact button ---
   var floatContact = document.getElementById('floatContact');
   var floatBtn = document.getElementById('floatContactBtn');
