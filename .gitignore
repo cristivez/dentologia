@@ -1,5 +1,42 @@
-# macOS
-.DS_Store
+# dependencies
+node_modules/
 
-# Claude Code local settings
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# misc
+.DS_Store
+*.pem
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# debug
+npm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# testing
+/test-results/
+/playwright-report/
+/blob-report/
+
+# cloudflare
+.open-next/
+.wrangler/
+.dev.vars
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
 .claude/settings.local.json

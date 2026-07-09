@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-muted: var(--muted);
+  --color-border: var(--border-color);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-whatsapp: #25d366;
+  --color-whatsapp-foreground: #1a3d2a; /* 6.07:1 on whatsapp — WCAG AA */
+  --color-star: #f1c40f;
+
+  --font-sans: var(--font-montserrat);
+}
+
+/* Dark theme only — single palette derived from current site */
+:root {
+  --background: #5f6361;
+  --foreground: #ece3cb; /* 5.07:1 on background — WCAG AA */
+  --surface: #555a57;
+  --surface-elevated: #6b706d;
+  --muted: #e8e0c8; /* 4.7:1 on background — WCAG AA */
+  --border-color: rgba(229, 219, 192, 0.18);
+  --primary: #ece3cb; /* Same as foreground — WCAG AA */
+  --primary-foreground: #555a57;
+  --accent: #e7dfc6; /* 4.65:1 on background — WCAG AA */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Text selection */
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Reduced motion — respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background: var(--surface);
+  color: var(--foreground);
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-weight: 600;
+  transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}

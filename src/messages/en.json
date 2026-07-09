@@ -1,0 +1,64 @@
+{
+  "Metadata": {
+    "title": "Dental Clinic Câmpulung Muscel - Implants, Braces | Dentologia",
+    "description": "Dentist in Câmpulung Muscel. Dental implants, braces, whitening, scaling, dental emergencies. Transparent prices. Appointments: 0750 486 564."
+  },
+  "Nav": {
+    "home": "Home",
+    "services": "Services",
+    "prices": "Prices",
+    "reviews": "Reviews",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "Hero": {
+    "title": "Dentologia",
+    "subtitle": "Dental Clinic in Câmpulung Muscel",
+    "tagline": "Modern dental clinic with complete services: dental implants, braces, whitening, scaling, dental emergencies. Transparent prices for the whole family.",
+    "cta_services": "Services",
+    "cta_contact": "Book now"
+  },
+  "Home": {
+    "services_title": "Our Services",
+    "services_subtitle": "A complete range of dental services",
+    "see_prices": "See prices →",
+    "all_services": "All services",
+    "reviews_title": "What patients say",
+    "reviews_subtitle": "Real reviews from Google Maps",
+    "all_reviews": "All reviews",
+    "faq_title": "Frequently asked questions",
+    "faq_subtitle": "Quick answers to the most common questions",
+    "all_faq": "All questions",
+    "contact_title": "Book an appointment",
+    "contact_subtitle": "Call or message us for a quick appointment",
+    "call_now": "Call now",
+    "address": "Address",
+    "schedule": "Schedule",
+    "all_contact": "All contact details"
+  },
+  "Services": {
+    "heading": "Our Services",
+    "subtitle": "We offer a complete range of dental services for the whole family",
+    "card1_title": "Dental consultations & emergencies",
+    "card1_description": "Complete dental consultations, aesthetic fillings, professional scaling, endodontic treatments and dental emergencies in Câmpulung Muscel — for the whole family.",
+    "card1_feature1": "Specialist consultation",
+    "card1_feature2": "Aesthetic physiognomic fillings",
+    "card1_feature3": "Scaling + professional AirFlow",
+    "card1_feature4": "Endodontic treatment (root canal)",
+    "card1_feature5": "Dental emergencies",
+    "card2_title": "Dental implants & oral surgery",
+    "card2_description": "Dental implants in Câmpulung Muscel with modern technology. We offer advanced implantology, oral surgery, extractions (including wisdom teeth) and complete rehabilitation.",
+    "card2_feature1": "Dental implant",
+    "card2_feature2": "Oral surgery",
+    "card2_feature3": "Wisdom tooth extraction",
+    "card2_feature4": "Crown on implant (zirconia)",
+    "card2_feature5": "Complete oral rehabilitation",
+    "card3_title": "Braces, veneers & teeth whitening",
+    "card3_description": "Orthodontics for children and adults: metal braces, self-ligating, Damon and Spark clear aligners. We also offer Emax veneers, professional whitening and aesthetic zirconia crowns.",
+    "card3_feature1": "Metal / self-ligating / Damon braces",
+    "card3_feature2": "Spark clear aligners (Invisalign alternative)",
+    "card3_feature3": "Professional teeth whitening",
+    "card3_feature4": "Emax dental veneers",
+    "card3_feature5": "Zirconia crowns / dental prosthetics"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "Metadata": {
+    "title": "Clinică Stomatologică Câmpulung Muscel - Implant, Aparat Dentar | Dentologia",
+    "description": "Dentist în Câmpulung Muscel. Implant dentar, aparat dentar, albire, detartraj, urgențe stomatologice. Prețuri transparente. Programări: 0750 486 564."
+  },
+  "Nav": {
+    "home": "Acasă",
+    "services": "Servicii",
+    "prices": "Prețuri",
+    "reviews": "Recenzii",
+    "faq": "Întrebări",
+    "contact": "Contact"
+  },
+  "Hero": {
+    "title": "Dentologia",
+    "subtitle": "Clinică Stomatologică în Câmpulung Muscel",
+    "tagline": "Clinică stomatologică modernă cu servicii complete: implant dentar, aparat dentar, albire, detartraj, urgențe stomatologice. Prețuri transparente pentru întreaga familie.",
+    "cta_services": "Servicii",
+    "cta_contact": "Programare"
+  },
+  "Home": {
+    "services_title": "Serviciile noastre",
+    "services_subtitle": "Oferim o gamă completă de servicii stomatologice",
+    "see_prices": "Vezi prețuri →",
+    "all_services": "Toate serviciile",
+    "reviews_title": "Ce spun pacienții",
+    "reviews_subtitle": "Recenzii reale de pe Google Maps",
+    "all_reviews": "Toate recenziile",
+    "faq_title": "Întrebări frecvente",
+    "faq_subtitle": "Răspunsuri rapide la cele mai comune întrebări",
+    "all_faq": "Toate întrebările",
+    "contact_title": "Programare",
+    "contact_subtitle": "Sunați sau scrieți-ne pentru o programare rapidă",
+    "call_now": "Sună acum",
+    "address": "Adresă",
+    "schedule": "Program",
+    "all_contact": "Toate detaliile de contact"
+  },
+  "Services": {
+    "heading": "Serviciile noastre",
+    "subtitle": "Oferim o gamă completă de servicii stomatologice pentru întreaga familie",
+    "card1_title": "Consultații stomatologice & urgențe dentare",
+    "card1_description": "Consultații stomatologice complete, obturații estetice, detartraj profesional, tratamente endodontice și urgențe dentare în Câmpulung Muscel — pentru întreaga familie.",
+    "card1_feature1": "Consultație de specialitate",
+    "card1_feature2": "Obturații fizionomice estetice",
+    "card1_feature3": "Detartraj + AirFlow profesional",
+    "card1_feature4": "Tratament endodontic (canal radicular)",
+    "card1_feature5": "Urgențe stomatologice",
+    "card2_title": "Implant dentar & chirurgie orală",
+    "card2_description": "Implant dentar în Câmpulung Muscel cu tehnologie modernă. Oferim implantologie avansată, chirurgie orală, extracții (inclusiv molar de minte) și reabilitări complete.",
+    "card2_feature1": "Implant dentar",
+    "card2_feature2": "Chirurgie orală",
+    "card2_feature3": "Extracție molar de minte",
+    "card2_feature4": "Coroană pe implant (zirconiu)",
+    "card2_feature5": "Reabilitare orală completă",
+    "card3_title": "Aparat dentar, fațete & albire dentară",
+    "card3_description": "Ortodonție pentru copii și adulți: aparat dentar metalic, autoligaturant, Damon și gutiere transparente Spark. Oferim și fațete dentare Emax, albire profesională și coroane estetice din zirconiu.",
+    "card3_feature1": "Aparat dentar metalic / autoligaturant / Damon",
+    "card3_feature2": "Gutiere transparente Spark (alternativă Invisalign)",
+    "card3_feature3": "Albire dentară profesională",
+    "card3_feature4": "Fațete dentare Emax",
+    "card3_feature5": "Coroane zirconiu / proteză dentară"
+  }
+}
