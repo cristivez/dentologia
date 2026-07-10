@@ -7,10 +7,14 @@ test.describe("Phase 1 — Foundation", () => {
     expect(response?.status()).toBe(200);
   });
 
-  test("homepage renders clinic name in h1", async ({ page }) => {
+  test("homepage h1 carries the city, not just the brand name", async ({
+    page,
+  }) => {
     await page.goto("/");
     const h1 = page.locator("h1");
-    await expect(h1).toContainText("Dentologia");
+    await expect(h1).toContainText("Câmpulung Muscel");
+    // The brand still appears, as an eyebrow above the h1.
+    await expect(page.locator("main")).toContainText("Dentologia");
   });
 
   test("page has no console errors", async ({ page }) => {

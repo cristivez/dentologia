@@ -5,6 +5,8 @@ type SectionHeadingProps = {
   subtitle?: string;
   align?: "center" | "left";
   className?: string;
+  /** `h1` when this heading titles the page, `h2` (default) for a section. */
+  as?: "h1" | "h2";
 };
 
 export function SectionHeading({
@@ -12,14 +14,15 @@ export function SectionHeading({
   subtitle,
   align = "center",
   className,
+  as: Heading = "h2",
 }: SectionHeadingProps) {
   return (
     <div
       className={cn("mb-12", align === "center" && "text-center", className)}
     >
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+      <Heading className="text-3xl md:text-4xl font-bold text-foreground mb-4">
         {title}
-      </h2>
+      </Heading>
       {subtitle && (
         <p className="text-muted text-lg max-w-2xl mx-auto">{subtitle}</p>
       )}

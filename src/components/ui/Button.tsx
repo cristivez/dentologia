@@ -1,3 +1,4 @@
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 type ButtonProps = {
@@ -28,6 +29,15 @@ const sizes = {
   lg: "px-8 py-4 text-lg min-h-[44px] min-w-[44px]",
 };
 
+/**
+ * An `href` starting with "/" is an in-app route, so it renders next-intl's
+ * `Link`: navigation stays client-side and the locale prefix is preserved.
+ * Everything else (tel:, https:, mailto:, #anchor) stays a plain anchor.
+ */
+function isInternalHref(href: string): boolean {
+  return href.startsWith("/");
+}
+
 export function Button({
   variant = "primary",
   size = "md",
@@ -45,6 +55,13 @@ export function Button({
   );
 
   if (href) {
+    if (isInternalHref(href)) {
+      return (
+        <Link href={href} className={classes} {...props}>
+          {children}
+        </Link>
+      );
+    }
     return (
       <a href={href} className={classes} {...props}>
         {children}

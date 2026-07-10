@@ -7,12 +7,28 @@ describe("Service catalog data", () => {
     expect(serviceCategories).toHaveLength(7);
   });
 
-  it("every category has a slug, tabLabel, and items", () => {
+  it("every category has a slug, label, and items", () => {
     for (const cat of serviceCategories) {
       expect(cat.slug).toBeTruthy();
-      expect(cat.tabLabel).toBeTruthy();
+      expect(cat.label).toBeTruthy();
       expect(cat.items.length).toBeGreaterThan(0);
     }
+  });
+
+  it("every category carries its own page metadata", () => {
+    for (const cat of serviceCategories) {
+      expect(cat.h1, cat.slug).toContain("Câmpulung Muscel");
+      expect(cat.title, cat.slug).toBeTruthy();
+      expect(cat.metaDescription.length, cat.slug).toBeLessThanOrEqual(165);
+      expect(cat.intro.length, cat.slug).toBeGreaterThan(80);
+    }
+  });
+
+  it("category titles and h1s are unique", () => {
+    const titles = serviceCategories.map((c) => c.title);
+    const h1s = serviceCategories.map((c) => c.h1);
+    expect(new Set(titles).size).toBe(titles.length);
+    expect(new Set(h1s).size).toBe(h1s.length);
   });
 
   it("every item has a non-empty name and price", () => {

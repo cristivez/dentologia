@@ -3,16 +3,57 @@ export type ServiceItem = {
   price: string;
 };
 
+/**
+ * Every price category, each with its own `/preturi/<slug>` page.
+ *
+ * Typing this as a union rather than `string` is what stops a link like
+ * `/preturi?tab=implant` — which shipped to production and rendered an empty
+ * price page — from ever compiling again.
+ */
+export const SERVICE_CATEGORY_SLUGS = [
+  "general",
+  "profilaxie",
+  "odontoterapie",
+  "endodontie",
+  "chirurgie",
+  "ortodontie",
+  "protetica",
+] as const;
+
+export type ServiceCategorySlug = (typeof SERVICE_CATEGORY_SLUGS)[number];
+
 export type ServiceCategory = {
-  slug: string;
-  tabLabel: string;
+  slug: ServiceCategorySlug;
+  /** Short name, used in the jump-nav on /preturi. */
+  label: string;
+  /** Heading of the category's own page. Carries the city. */
+  h1: string;
+  title: string;
+  metaDescription: string;
+  intro: string;
   items: ServiceItem[];
 };
+
+/** Narrows an untrusted value (a route param) to a known category slug. */
+export function isServiceCategorySlug(
+  value: string | null | undefined,
+): value is ServiceCategorySlug {
+  return (
+    value != null &&
+    (SERVICE_CATEGORY_SLUGS as readonly string[]).includes(value)
+  );
+}
 
 export const serviceCategories: ServiceCategory[] = [
   {
     slug: "general",
-    tabLabel: "Consultații",
+    label: "Consultații",
+    h1: "Prețuri consultații stomatologice în Câmpulung Muscel",
+    title: "Preț Consultație Stomatologică Câmpulung | 100 lei | Dentologia",
+    metaDescription:
+      "Consultație de specialitate 100 lei, tratament de urgență 250 lei la Dentologia, Câmpulung Muscel. Prețuri transparente, fără costuri ascunse.",
+    intro:
+      "Prima vizită la Dentologia începe cu o consultație de specialitate, în care evaluăm starea dinților și a gingiilor și stabilim împreună un plan de tratament. Pentru durerea acută avem tarif separat de urgență.",
     items: [
       { name: "Consultație de specialitate", price: "100 lei" },
       { name: "Tratament de urgență", price: "250 lei" },
@@ -20,7 +61,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     slug: "profilaxie",
-    tabLabel: "Profilaxie",
+    label: "Profilaxie",
+    h1: "Prețuri profilaxie și igienizare dentară în Câmpulung Muscel",
+    title: "Prețuri Profilaxie Dentară Câmpulung | de la 100 lei | Dentologia",
+    metaDescription:
+      "Detartraj 150 lei, pachet detartraj + periaj + AirFlow 250 lei, fluorizare 150 lei, sigilări 200 lei. Profilaxie dentară în Câmpulung Muscel.",
+    intro:
+      "Profilaxia este cea mai ieftină formă de tratament: o igienizare periodică previne cariile și boala parodontală. Aici găsiți tarifele pentru detartraj, periaj profesional, AirFlow, fluorizare și sigilări.",
     items: [
       {
         name: "Pachet complet: Detartraj + Periaj + AirFlow",
@@ -44,7 +91,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     slug: "odontoterapie",
-    tabLabel: "Odontoterapie",
+    label: "Odontoterapie",
+    h1: "Prețuri obturații și tratarea cariilor în Câmpulung Muscel",
+    title: "Preț Plombă Dentară Câmpulung | de la 150 lei | Dentologia",
+    metaDescription:
+      "Obturație fizionomică de la 200 lei, obturație dinte frontal 350 lei, obturație CIS 150 lei, reconstrucție dinte fracturat 200–300 lei. Câmpulung Muscel.",
+    intro:
+      "Odontoterapia tratează caria dentară. Obturația (plomba) fizionomică reface forma și funcția dintelui folosind material compozit de culoarea smalțului. Prețul depinde de mărimea cavității și de poziția dintelui.",
     items: [
       { name: "Obturație fizionomică mică", price: "200 lei" },
       { name: "Obturație fizionomică medie", price: "250 lei" },
@@ -56,7 +109,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     slug: "endodontie",
-    tabLabel: "Endodonție",
+    label: "Endodonție",
+    h1: "Prețuri tratament de canal (endodonție) în Câmpulung Muscel",
+    title: "Preț Tratament de Canal Câmpulung | de la 250 lei | Dentologia",
+    metaDescription:
+      "Tratament endodontic rotativ de la 250 lei (monoradicular), 300–500 lei pluriradicular. Retratament, drenaj endodontic, ablație pivot. Câmpulung Muscel.",
+    intro:
+      "Tratamentul endodontic salvează un dinte al cărui nerv este inflamat sau infectat. Lucrăm cu instrumentar rotativ, care scurtează durata ședinței. Prețul variază după numărul de canale radiculare.",
     items: [
       {
         name: "Consultație de urgență + pansament calmant",
@@ -83,7 +142,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     slug: "chirurgie",
-    tabLabel: "Chirurgie",
+    label: "Chirurgie",
+    h1: "Prețuri extracții și chirurgie orală în Câmpulung Muscel",
+    title: "Preț Extracție Dentară Câmpulung | de la 150 lei | Dentologia",
+    metaDescription:
+      "Extracție monoradiculară 150–200 lei, pluriradiculară 250–300 lei, molar de minte 400–600 lei, incizie și drenaj abces 200 lei. Câmpulung Muscel.",
+    intro:
+      "Extracția este ultima soluție, aleasă doar când dintele nu mai poate fi salvat. Toate intervențiile se fac sub anestezie locală. Prețul depinde de numărul de rădăcini și de dificultatea cazului.",
     items: [
       { name: "Extracție monoradiculară", price: "150 – 200 lei" },
       { name: "Extracție pluriradiculară", price: "250 – 300 lei" },
@@ -94,7 +159,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     slug: "ortodontie",
-    tabLabel: "Ortodonție",
+    label: "Ortodonție",
+    h1: "Prețuri ortodonție și aparat dentar în Câmpulung Muscel",
+    title: "Preț Aparat Dentar Câmpulung | de la 2.700 lei | Dentologia",
+    metaDescription:
+      "Aparat metalic 2.700 lei/arcadă, autoligaturant 3.200 lei, Damon 4.500 lei, gutiere Spark de la 1.600 €. Controale, retainer, contenție. Câmpulung Muscel.",
+    intro:
+      "Ortodonția aliniază dinții și corectează mușcătura, la copii și la adulți. Prețurile de mai jos acoperă aparatele fixe și mobile, gutierele transparente Spark, controalele periodice și contenția de la finalul tratamentului.",
     items: [
       { name: "Consultație", price: "100 lei" },
       { name: "Plan de tratament + Modele de studiu", price: "200 lei" },
@@ -136,7 +207,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
   {
     slug: "protetica",
-    tabLabel: "Protetică",
+    label: "Protetică",
+    h1: "Prețuri coroane, fațete și proteze dentare în Câmpulung Muscel",
+    title: "Preț Coroană Zirconiu Câmpulung | de la 900 lei | Dentologia",
+    metaDescription:
+      "Coroană zirconiu de la 900 lei, zirconiu + ceramică 1.100 lei, fațete Emax Ivoclar 1.800 lei/element, proteză totală de la 2.000 lei. Câmpulung Muscel.",
+    intro:
+      "Protetica reface dinții pierduți sau grav deteriorați. Lucrăm cu zirconiu monolit și stratificat, ceramică Emax Ivoclar și componente Dentsply Sirona, iar proteze mobile realizăm atât acrilice, cât și flexibile.",
     items: [
       {
         name: "Element zirconiu monolit multistratificat",
@@ -197,3 +274,58 @@ export const totalServiceItems = serviceCategories.reduce(
   (sum, cat) => sum + cat.items.length,
   0,
 );
+
+/** Price rows for a category, looked up by slug. */
+export function itemsForCategory(slug: ServiceCategorySlug): ServiceItem[] {
+  return serviceCategories.find((cat) => cat.slug === slug)?.items ?? [];
+}
+
+export function getServiceCategory(slug: string): ServiceCategory | undefined {
+  return serviceCategories.find((cat) => cat.slug === slug);
+}
+
+export type ParsedPrice =
+  | { kind: "single"; value: number; currency: "RON" | "EUR" }
+  | { kind: "range"; min: number; max: number; currency: "RON" | "EUR" };
+
+/**
+ * Turns a display price into something schema.org accepts.
+ *
+ * Prices are authored for humans — "2.700 lei / arcadă", "300 – 500 lei",
+ * "1.600 EUR" — but `Offer.price` must be a bare number, and a range has to
+ * become an `AggregateOffer`. Romanian uses "." as the thousands separator, so
+ * "2.700" is two thousand seven hundred, not 2.7.
+ *
+ * Returns null rather than guessing when no number can be read.
+ */
+export function parsePrice(price: string): ParsedPrice | null {
+  const currency = /eur|€/i.test(price) ? "EUR" : "RON";
+
+  // 1–3 digits, then any number of ".ddd" groups. Matches 100, 2.700, 1.600.
+  const numbers = Array.from(price.matchAll(/\d{1,3}(?:\.\d{3})*/g)).map((m) =>
+    Number(m[0].replace(/\./g, "")),
+  );
+
+  if (numbers.length === 0) return null;
+  if (numbers.length === 1) {
+    return { kind: "single", value: numbers[0], currency };
+  }
+
+  const min = Math.min(...numbers);
+  const max = Math.max(...numbers);
+  return min === max
+    ? { kind: "single", value: min, currency }
+    : { kind: "range", min, max, currency };
+}
+
+/**
+ * Price rows whose name matches any of `names`, drawn from every category.
+ * Service pages cut across the clinical categories — an implant page needs
+ * rows from both `chirurgie` and `protetica` — so they select by name.
+ */
+export function itemsByName(names: readonly string[]): ServiceItem[] {
+  const wanted = new Set(names);
+  return serviceCategories
+    .flatMap((cat) => cat.items)
+    .filter((item) => wanted.has(item.name));
+}
