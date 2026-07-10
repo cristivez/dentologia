@@ -3,6 +3,7 @@
 import { m } from "framer-motion";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { spring, viewportOnce } from "@/lib/motion";
 
 type AnimatedSectionProps = {
   children: React.ReactNode;
@@ -10,6 +11,12 @@ type AnimatedSectionProps = {
   delay?: number;
 };
 
+/**
+ * Fades and lifts a single block into view. For a set of sibling elements that
+ * should animate as one sequence, use `AnimatedGroup` + `AnimatedItem` instead:
+ * a per-child `delay` here is measured from each child's own viewport entry,
+ * which does not read as a stagger.
+ */
 export function AnimatedSection({
   children,
   className,
@@ -25,10 +32,10 @@ export function AnimatedSection({
   return (
     <m.div
       className={className}
-      initial={{ opacity: 0, y: isMobile ? 20 : 40 }}
+      initial={{ opacity: 0, y: isMobile ? 16 : 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: isMobile ? "0px" : "-80px" }}
-      transition={{ duration: 0.6, ease: "easeOut", delay }}
+      viewport={isMobile ? { once: true, margin: "0px" } : viewportOnce}
+      transition={{ ...spring, delay }}
     >
       {children}
     </m.div>
