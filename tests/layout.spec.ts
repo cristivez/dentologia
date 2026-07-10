@@ -31,9 +31,19 @@ test.describe("Phase 2 — Layout", () => {
     const nav = page.locator('nav[aria-label="Navigare principală"]');
     await expect(nav).toBeVisible();
 
-    const links = nav.locator("a");
-    const count = await links.count();
-    expect(count).toBe(6);
+    // Assert the real routes are present rather than a magic count, so adding
+    // a nav item doesn't require editing a number here.
+    for (const href of [
+      "/",
+      "/servicii",
+      "/preturi",
+      "/echipa",
+      "/recenzii",
+      "/intrebari",
+      "/contact",
+    ]) {
+      await expect(nav.locator(`a[href="${href}"]`)).toBeVisible();
+    }
   });
 
   test("footer is visible with copyright text", async ({ page }) => {
@@ -117,10 +127,19 @@ test.describe("Phase 2 — Mobile Layout", () => {
     await hamburger.click();
 
     const mobileNav = page.locator('nav[aria-label="Meniu mobil"]');
-    const links = mobileNav.locator("a");
-    // 6 nav links + 1 phone link at bottom
-    const count = await links.count();
-    expect(count).toBe(7);
+    // Every route link plus the phone link at the bottom.
+    for (const href of [
+      "/",
+      "/servicii",
+      "/preturi",
+      "/echipa",
+      "/recenzii",
+      "/intrebari",
+      "/contact",
+    ]) {
+      await expect(mobileNav.locator(`a[href="${href}"]`)).toBeVisible();
+    }
+    await expect(mobileNav.locator('a[href^="tel:"]')).toBeVisible();
   });
 
   test("mobile menu has phone number", async ({ page }) => {
