@@ -1,22 +1,28 @@
+import { use, type CSSProperties } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { CLINIC, SCHEDULE } from "@/lib/constants";
+import { setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { CLINIC, SCHEDULE, formatHours } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { reviews, aggregateRating } from "@/data/reviews";
+import { AnimatedGroup, AnimatedItem } from "@/components/shared/AnimatedGroup";
+import { GoogleRating } from "@/components/shared/GoogleRating";
+import { PriceTabs } from "@/components/shared/PriceTabs";
 import { faqItems } from "@/data/faq";
 import {
   ChevronDown,
-  Star,
   FileText,
   Smile,
+  Star,
   Phone,
   MessageCircle,
   MapPin,
   Clock,
+  ArrowRight,
 } from "lucide-react";
 
 const servicePreview = [
@@ -24,63 +30,111 @@ const servicePreview = [
     Icon: FileText,
     titleKey: "card1_title" as const,
     descKey: "card1_description" as const,
-    slug: "general",
+    slug: "urgente-stomatologice",
   },
   {
     Icon: Star,
     titleKey: "card2_title" as const,
     descKey: "card2_description" as const,
-    slug: "implant",
+    slug: "implant-dentar",
   },
   {
     Icon: Smile,
     titleKey: "card3_title" as const,
     descKey: "card3_description" as const,
-    slug: "ortodontie",
+    slug: "aparat-dentar",
   },
 ];
 
-export default function HomePage() {
+export default function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  // Opting this page into static rendering. Without it next-intl marks the
+  // route dynamic and Cloudflare re-renders it on every request.
+  const { locale } = use(params);
+  setRequestLocale(locale);
+
   const t = useTranslations("Hero");
   const ts = useTranslations("Services");
   const th = useTranslations("Home");
 
   const topFaqs = faqItems.slice(0, 3);
-  const topReviews = reviews.slice(0, 2);
 
   const weekdaySchedule = SCHEDULE.find((s) => s.day === "Luni");
   const saturdaySchedule = SCHEDULE.find((s) => s.day === "Sâmbătă");
+  const sundaySchedule = SCHEDULE.find((s) => s.day === "Duminică");
 
   return (
     <>
-      {/* Hero */}
-      <section className="flex min-h-dvh flex-col items-center justify-center px-4 text-center">
-        <Image
-          src="/logo.webp"
-          alt={`${CLINIC.name} - Logo`}
-          width={160}
-          height={160}
-          className="mb-8 rounded-2xl"
-          priority
-        />
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-4">
+      {/* Hero — server-rendered, no JS gate. Entrance is CSS transform only. */}
+      <section className="flex min-h-dvh flex-col items-center justify-center px-4 py-24 text-center">
+        <div
+          className="rise"
+          style={{ "--rise-delay": "0ms" } as CSSProperties}
+        >
+          <Image
+            src="/logo.webp"
+            alt={`${CLINIC.name} - Logo`}
+            width={120}
+            height={120}
+            className="mb-6 rounded-2xl"
+            priority
+          />
+        </div>
+
+        <p
+          className="rise text-sm font-semibold uppercase tracking-[0.2em] text-accent mb-3"
+          style={{ "--rise-delay": "60ms" } as CSSProperties}
+        >
+          {t("brand")}
+        </p>
+
+        <h1
+          className="rise max-w-4xl text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4 text-balance"
+          style={{ "--rise-delay": "120ms" } as CSSProperties}
+        >
           {t("title")}
         </h1>
-        <p className="text-xl sm:text-2xl text-muted mb-4">{t("subtitle")}</p>
-        <p className="max-w-xl text-base text-accent mb-8 leading-relaxed">
+
+        <p
+          className="rise text-lg sm:text-xl text-muted mb-4"
+          style={{ "--rise-delay": "180ms" } as CSSProperties}
+        >
+          {t("subtitle")}
+        </p>
+
+        <p
+          className="rise max-w-xl text-base text-accent mb-8 leading-relaxed"
+          style={{ "--rise-delay": "220ms" } as CSSProperties}
+        >
           {t("tagline")}
         </p>
-        <div className="flex flex-col sm:flex-row gap-4">
+
+        <div
+          className="rise flex flex-col sm:flex-row gap-4"
+          style={{ "--rise-delay": "260ms" } as CSSProperties}
+        >
           <Button href="/servicii" size="lg">
             {t("cta_services")}
           </Button>
-          <Button href="/contact" variant="secondary" size="lg">
-            {t("cta_contact")}
+          <Button href={`tel:${CLINIC.phone}`} variant="secondary" size="lg">
+            <Phone size={20} aria-hidden="true" />
+            {CLINIC.phoneDisplay}
           </Button>
         </div>
+
+        <div
+          className="rise mt-10"
+          style={{ "--rise-delay": "300ms" } as CSSProperties}
+        >
+          <GoogleRating size="sm" />
+        </div>
+
         <a
           href="#servicii-preview"
-          className="mt-16 animate-bounce text-muted"
+          className="mt-12 animate-bounce text-muted min-h-[44px] flex items-center"
           aria-label="Descoperă serviciile"
         >
           <ChevronDown size={32} aria-hidden="true" />
@@ -96,10 +150,10 @@ export default function HomePage() {
               subtitle={th("services_subtitle")}
             />
           </AnimatedSection>
-          <div className="grid gap-6 md:grid-cols-3">
-            {servicePreview.map((svc, i) => (
-              <AnimatedSection key={svc.slug} delay={i * 0.1}>
-                <Card hover>
+          <AnimatedGroup className="grid gap-6 md:grid-cols-3">
+            {servicePreview.map((svc) => (
+              <AnimatedItem key={svc.slug} className="h-full">
+                <Card hover className="h-full flex flex-col">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-surface-elevated">
                     <svc.Icon
                       size={28}
@@ -111,16 +165,16 @@ export default function HomePage() {
                   <p className="text-muted text-sm leading-relaxed mb-4 line-clamp-3">
                     {ts(svc.descKey)}
                   </p>
-                  <a
-                    href={`/preturi?tab=${svc.slug}`}
-                    className="text-sm font-semibold text-primary [@media(hover:hover)]:hover:underline"
+                  <Link
+                    href={`/servicii/${svc.slug}`}
+                    className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-primary [@media(hover:hover)]:hover:underline"
                   >
                     {th("see_prices")}
-                  </a>
+                  </Link>
                 </Card>
-              </AnimatedSection>
+              </AnimatedItem>
             ))}
-          </div>
+          </AnimatedGroup>
           <AnimatedSection>
             <div className="text-center mt-8">
               <Button href="/servicii" variant="secondary">
@@ -131,8 +185,112 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Reviews Preview */}
+      {/* Prices — one category at a time. Full list lives at /preturi. */}
       <section className="py-20">
+        <Container>
+          <AnimatedSection>
+            <SectionHeading
+              title={th("prices_title")}
+              subtitle={th("prices_subtitle")}
+            />
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.1}>
+            <div className="mx-auto max-w-3xl">
+              <PriceTabs seePricesLabel={th("see_category_prices")} />
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.2}>
+            <div className="mt-8 text-center">
+              <Button href="/preturi" variant="secondary">
+                {th("all_prices")}
+              </Button>
+            </div>
+          </AnimatedSection>
+        </Container>
+      </section>
+
+      {/* About */}
+      <section className="bg-surface py-20">
+        <Container>
+          <AnimatedSection>
+            <SectionHeading
+              title={th("about_title")}
+              subtitle={th("about_subtitle")}
+            />
+          </AnimatedSection>
+          <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
+            <AnimatedSection delay={0.1}>
+              <Image
+                src="/photos/receptie.webp"
+                alt="Recepția clinicii Dentologia din Câmpulung Muscel"
+                width={1152}
+                height={1475}
+                sizes="(min-width: 768px) 40vw, 100vw"
+                className="rounded-2xl border border-border object-cover"
+              />
+            </AnimatedSection>
+
+            <AnimatedGroup className="space-y-4">
+              {(["about_p1", "about_p2", "about_p3"] as const).map((key) => (
+                <AnimatedItem key={key}>
+                  <p className="text-muted leading-relaxed">{th(key)}</p>
+                </AnimatedItem>
+              ))}
+            </AnimatedGroup>
+          </div>
+        </Container>
+      </section>
+
+      {/* Gallery — real clinic-in-action photos (staff consent on record) */}
+      <section className="py-20">
+        <Container>
+          <AnimatedSection>
+            <SectionHeading
+              title={th("gallery_title")}
+              subtitle={th("gallery_subtitle")}
+            />
+          </AnimatedSection>
+          <AnimatedGroup className="grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                src: "/photos/galerie-1.webp",
+                alt: "Medic stomatolog în timpul unui tratament la Dentologia",
+              },
+              {
+                src: "/photos/galerie-2.webp",
+                alt: "Echipa Dentologia în timpul unei intervenții stomatologice",
+              },
+              {
+                src: "/photos/galerie-3.webp",
+                alt: "Tratament ortodontic la clinica Dentologia din Câmpulung Muscel",
+              },
+            ].map((img) => (
+              <AnimatedItem key={img.src}>
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={760}
+                  height={950}
+                  sizes="(min-width: 640px) 30vw, 100vw"
+                  className="h-full w-full rounded-2xl border border-border object-cover"
+                />
+              </AnimatedItem>
+            ))}
+          </AnimatedGroup>
+          <AnimatedSection delay={0.2}>
+            <div className="mt-8 text-center">
+              <Button href="/echipa" variant="secondary">
+                {th("team_link")}
+              </Button>
+            </div>
+          </AnimatedSection>
+        </Container>
+      </section>
+
+      {/* Reviews Preview */}
+      <section className="bg-surface py-20">
         <Container>
           <AnimatedSection>
             <SectionHeading
@@ -142,54 +300,10 @@ export default function HomePage() {
           </AnimatedSection>
 
           <AnimatedSection delay={0.1}>
-            <div className="flex flex-col items-center gap-2 mb-8">
-              <div className="flex items-center gap-3">
-                <span className="text-4xl font-bold text-foreground">
-                  {aggregateRating.value.toFixed(1)}
-                </span>
-                <div className="flex flex-col gap-1">
-                  <div
-                    className="flex gap-0.5"
-                    role="img"
-                    aria-label="5 din 5 stele"
-                  >
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <Star key={i} size={18} className="fill-star text-star" />
-                    ))}
-                  </div>
-                  <span className="text-sm text-muted">
-                    {aggregateRating.count} recenzii pe Google
-                  </span>
-                </div>
-              </div>
-            </div>
+            <GoogleRating size="md" />
           </AnimatedSection>
 
-          <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
-            {topReviews.map((review, i) => (
-              <AnimatedSection key={i} delay={0.15 + i * 0.1}>
-                <Card>
-                  <div
-                    className="flex gap-0.5 mb-3"
-                    role="img"
-                    aria-label="5 din 5 stele"
-                  >
-                    {Array.from({ length: 5 }, (_, j) => (
-                      <Star key={j} size={14} className="fill-star text-star" />
-                    ))}
-                  </div>
-                  <blockquote className="text-sm text-foreground leading-relaxed mb-3">
-                    &ldquo;{review.text}&rdquo;
-                  </blockquote>
-                  <p className="text-sm font-semibold text-primary">
-                    {review.author}
-                  </p>
-                </Card>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection delay={0.3}>
+          <AnimatedSection delay={0.2}>
             <div className="text-center mt-8">
               <Button href="/recenzii" variant="secondary">
                 {th("all_reviews")}
@@ -200,7 +314,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Preview */}
-      <section className="bg-surface py-20">
+      <section className="py-20">
         <Container>
           <AnimatedSection>
             <SectionHeading
@@ -209,10 +323,10 @@ export default function HomePage() {
             />
           </AnimatedSection>
 
-          <div className="max-w-3xl mx-auto space-y-3">
-            {topFaqs.map((item, i) => (
-              <AnimatedSection key={i} delay={i * 0.1}>
-                <details className="group rounded-xl border border-border bg-background overflow-hidden">
+          <AnimatedGroup className="max-w-3xl mx-auto space-y-3">
+            {topFaqs.map((item) => (
+              <AnimatedItem key={item.question}>
+                <details className="group rounded-xl border border-border bg-surface overflow-hidden">
                   <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-foreground font-medium text-sm min-h-[44px] list-none [&::-webkit-details-marker]:hidden">
                     <span>{item.question}</span>
                     <span
@@ -226,9 +340,9 @@ export default function HomePage() {
                     <p>{item.answer}</p>
                   </div>
                 </details>
-              </AnimatedSection>
+              </AnimatedItem>
             ))}
-          </div>
+          </AnimatedGroup>
 
           <AnimatedSection delay={0.3}>
             <div className="text-center mt-8">
@@ -241,7 +355,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-20">
+      <section className="bg-surface py-20">
         <Container>
           <AnimatedSection>
             <SectionHeading
@@ -258,7 +372,7 @@ export default function HomePage() {
                 size="lg"
                 aria-label="Sună acum"
               >
-                <Phone size={20} />
+                <Phone size={20} aria-hidden="true" />
                 {th("call_now")}
               </Button>
               <Button
@@ -269,17 +383,21 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 aria-label="Scrie pe WhatsApp"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={20} aria-hidden="true" />
                 WhatsApp
               </Button>
             </div>
           </AnimatedSection>
 
-          <div className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto">
-            <AnimatedSection delay={0.2}>
-              <Card>
-                <div className="flex items-start gap-3 mb-2">
-                  <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
+          <AnimatedGroup className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto">
+            <AnimatedItem className="h-full">
+              <Card className="h-full">
+                <div className="flex items-start gap-3">
+                  <MapPin
+                    size={18}
+                    className="text-primary shrink-0 mt-0.5"
+                    aria-hidden="true"
+                  />
                   <div>
                     <h3 className="text-sm font-semibold text-foreground mb-1">
                       {th("address")}
@@ -292,34 +410,40 @@ export default function HomePage() {
                   </div>
                 </div>
               </Card>
-            </AnimatedSection>
+            </AnimatedItem>
 
-            <AnimatedSection delay={0.25}>
-              <Card>
-                <div className="flex items-start gap-3 mb-2">
-                  <Clock size={18} className="text-primary shrink-0 mt-0.5" />
+            <AnimatedItem className="h-full">
+              <Card className="h-full">
+                <div className="flex items-start gap-3">
+                  <Clock
+                    size={18}
+                    className="text-primary shrink-0 mt-0.5"
+                    aria-hidden="true"
+                  />
                   <div>
                     <h3 className="text-sm font-semibold text-foreground mb-1">
                       {th("schedule")}
                     </h3>
                     <p className="text-sm text-muted">
-                      Luni – Vineri: {weekdaySchedule?.open} –{" "}
-                      {weekdaySchedule?.close}
+                      Luni – Vineri: {formatHours(weekdaySchedule)}
                     </p>
                     <p className="text-sm text-muted">
-                      Sâmbătă: {saturdaySchedule?.open} –{" "}
-                      {saturdaySchedule?.close}
+                      Sâmbătă: {formatHours(saturdaySchedule)}
+                    </p>
+                    <p className="text-sm text-muted">
+                      Duminică: {formatHours(sundaySchedule)}
                     </p>
                   </div>
                 </div>
               </Card>
-            </AnimatedSection>
-          </div>
+            </AnimatedItem>
+          </AnimatedGroup>
 
           <AnimatedSection delay={0.35}>
             <div className="text-center mt-8">
               <Button href="/contact" variant="secondary">
                 {th("all_contact")}
+                <ArrowRight size={18} aria-hidden="true" />
               </Button>
             </div>
           </AnimatedSection>
