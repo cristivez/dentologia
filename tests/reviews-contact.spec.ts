@@ -2,28 +2,34 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test.describe("Phase 5 — Reviews Page", () => {
-  test("reviews page shows rating badge with 5.0", async ({ page }) => {
+  test("reviews page shows the real Google rating", async ({ page }) => {
     await page.goto("/recenzii", { waitUntil: "networkidle" });
-    await expect(page.locator("main")).toContainText("5.0");
+    // Romanian decimal comma, and the verified count from the Google profile.
+    await expect(page.locator("main")).toContainText("5,0");
+    await expect(page.locator("main")).toContainText("15 recenzii pe Google");
   });
 
-  test("reviews page has 9 review cards", async ({ page }) => {
+  test("reviews page shows no fabricated testimonials", async ({ page }) => {
     await page.goto("/recenzii", { waitUntil: "networkidle" });
-    const cards = page.locator("blockquote");
-    await expect(cards).toHaveCount(9);
+    const main = page.locator("main");
+    for (const name of ["Andrei M.", "Elena I.", "Maria P.", "George B."]) {
+      await expect(main).not.toContainText(name);
+    }
   });
 
-  test("reviews page has prev/next navigation buttons", async ({ page }) => {
+  test("reviews page never claims more reviews than Google reports", async ({
+    page,
+  }) => {
     await page.goto("/recenzii", { waitUntil: "networkidle" });
-    const prevBtn = page.locator('button[aria-label="Recenzia anterioară"]');
-    const nextBtn = page.locator('button[aria-label="Recenzia următoare"]');
-    await expect(prevBtn).toBeVisible();
-    await expect(nextBtn).toBeVisible();
+    const quotes = await page.locator("blockquote").count();
+    expect(quotes).toBeLessThanOrEqual(15);
   });
 
-  test("reviews page has Google Maps link", async ({ page }) => {
+  test("reviews page links to the real Google listing", async ({ page }) => {
     await page.goto("/recenzii", { waitUntil: "networkidle" });
-    const link = page.locator('a[href*="google.com/maps"]');
+    const link = page
+      .locator('a[href="https://www.google.com/maps?cid=15236386707900164590"]')
+      .first();
     await expect(link).toBeVisible();
   });
 
@@ -87,10 +93,11 @@ test.describe("Phase 5 — Contact Page", () => {
 test.describe("Phase 5 — Mobile", () => {
   test.use({ viewport: { width: 375, height: 812 } });
 
-  test("reviews carousel is swipeable on mobile", async ({ page }) => {
+  test("reviews page renders its Google panel on mobile", async ({ page }) => {
     await page.goto("/recenzii", { waitUntil: "networkidle" });
-    const carousel = page.locator(".overflow-hidden").first();
-    await expect(carousel).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Recenziile noastre sunt pe Google" }),
+    ).toBeVisible();
   });
 
   test("contact buttons stack vertically on mobile", async ({ page }) => {

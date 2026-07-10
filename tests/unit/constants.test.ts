@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CLINIC, SCHEDULE } from "@/lib/constants";
+import { CLINIC, SCHEDULE, formatHours, OPEN_DAYS } from "@/lib/constants";
 
 describe("CLINIC constants", () => {
   it("has a valid phone number format", () => {
@@ -71,15 +71,45 @@ describe("SCHEDULE", () => {
     }
   });
 
-  it("Saturday has reduced hours", () => {
-    const saturday = SCHEDULE[5];
-    expect(saturday.open).toBe("09:00");
-    expect(saturday.close).toBe("14:00");
+  /**
+   * Pinned to the Google Business Profile, which is the source of truth
+   * (verified 2026-07-10). The site used to claim 09:00–19:00 and Saturday
+   * 09:00–14:00 — matching neither Google nor the front-door decal.
+   */
+  it("weekday hours match the Google Business Profile: 09:00–18:00", () => {
+    for (const day of SCHEDULE.slice(0, 5)) {
+      expect(day.open, day.day).toBe("09:00");
+      expect(day.close, day.day).toBe("18:00");
+    }
   });
 
-  it("Sunday is closed", () => {
-    const sunday = SCHEDULE[6];
+  it("Saturday and Sunday are closed", () => {
+    const [saturday, sunday] = [SCHEDULE[5], SCHEDULE[6]];
+    expect(saturday.day).toBe("Sâmbătă");
+    expect(saturday.open).toBeNull();
     expect(sunday.open).toBeNull();
-    expect(sunday.close).toBeNull();
+  });
+
+  it("OPEN_DAYS lists only the five weekdays", () => {
+    expect(OPEN_DAYS.map((d) => d.day)).toEqual([
+      "Luni",
+      "Marți",
+      "Miercuri",
+      "Joi",
+      "Vineri",
+    ]);
+  });
+});
+
+describe("formatHours", () => {
+  it("formats an open day", () => {
+    expect(formatHours(SCHEDULE[0])).toBe("09:00 – 18:00");
+  });
+
+  /** Regression: a closed day used to render as a bare " – ". */
+  it("renders a closed day as Închis, never a bare dash", () => {
+    expect(formatHours(SCHEDULE[5])).toBe("Închis");
+    expect(formatHours(SCHEDULE[6])).toBe("Închis");
+    expect(formatHours(undefined)).toBe("Închis");
   });
 });

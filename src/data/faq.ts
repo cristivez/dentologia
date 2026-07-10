@@ -48,11 +48,11 @@ export const faqItems: FaqItem[] = [
   {
     question: "Cum pot face o programare la dentist în Câmpulung?",
     answer:
-      "Pentru o programare la Dentologia ne puteți contacta telefonic la 0750 486 564, pe WhatsApp, sau ne puteți vizita direct la cabinet pe Strada General Iosif Teodorescu 2, Câmpulung 115100. Suntem deschiși de Luni până Vineri 09:00 - 19:00 și Sâmbătă 09:00 - 14:00.",
+      "Pentru o programare la Dentologia ne puteți contacta telefonic la 0750 486 564, pe WhatsApp, sau ne puteți vizita direct la cabinet pe Strada General Iosif Teodorescu 2, Câmpulung 115100. Suntem deschiși de Luni până Vineri, între 09:00 și 18:00. Sâmbăta și duminica suntem închiși.",
   },
   {
     question: "Câtă experiență are clinica Dentologia?",
     answer:
-      "Dentologia este o clinică stomatologică modernă din Câmpulung Muscel, dotată cu aparatură de ultimă generație. Avem o evaluare medie de 5.0 stele din 12 recenzii pe Google Maps, oferind servicii complete de stomatologie, implantologie, ortodonție, estetică dentară, protetică și chirurgie orală.",
+      "Dentologia este o clinică stomatologică modernă din Câmpulung Muscel, dotată cu aparatură de ultimă generație. Avem o evaluare medie de 5,0 stele din 15 recenzii pe Google Maps, oferind servicii complete de stomatologie, implantologie, ortodonție, estetică dentară, protetică și chirurgie orală.",
   },
 ];

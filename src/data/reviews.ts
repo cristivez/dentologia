@@ -4,57 +4,18 @@ export type Review = {
   author: string;
 };
 
-export const reviews: Review[] = [
-  {
-    rating: 5,
-    text: "Servicii de calitate, personal foarte amabil și profesionist. Recomand cu încredere Dentologia pentru orice problemă stomatologică!",
-    author: "Andrei M.",
-  },
-  {
-    rating: 5,
-    text: "O clinică foarte modernă, curată și dotată cu aparatură de ultimă generație. Medicii au multă răbdare și explică totul pe înțeles.",
-    author: "Elena I.",
-  },
-  {
-    rating: 5,
-    text: "Experiență plăcută, fără durere. Am venit cu teamă, dar echipa m-a făcut să mă simt relaxat. Mulțumesc întregii echipe!",
-    author: "Cristian D.",
-  },
-  {
-    rating: 5,
-    text: "Profesionalism și atenție la detalii. Cel mai bun cabinet stomatologic din Câmpulung. Recomand tuturor celor care caută calitate.",
-    author: "Maria P.",
-  },
-  {
-    rating: 5,
-    text: "Cea mai bună experiență la dentist! Personalul este extrem de calm și profesionist. Recomand cu drag locația din Câmpulung.",
-    author: "Ioana G.",
-  },
-  {
-    rating: 5,
-    text: "Am rezolvat o urgență rapid și eficient. Un cabinet dotat la standarde înalte, unde te simți în siguranță. Mulțumim!",
-    author: "Marius V.",
-  },
-  {
-    rating: 5,
-    text: "Curățenie exemplară și servicii de top. Totul a decurs perfect, de la recepție și până la finalizarea tratamentului.",
-    author: "Simona L.",
-  },
-  {
-    rating: 5,
-    text: "Recomand Dentologia pentru răbdarea incredibilă pe care o au cu copiii. Fetița mea a plecat cu zâmbetul pe buze!",
-    author: "Daniela R.",
-  },
-  {
-    rating: 5,
-    text: "Tehnologie de ultimă oră și medici pregătiți. Se vede că pun preț pe confortul pacientului. 5 stele merită din plin!",
-    author: "George B.",
-  },
-];
-
-export const aggregateRating = {
-  value: 5.0,
-  count: 12,
-  best: 5,
-  worst: 1,
-};
+/**
+ * Patient testimonials shown on /recenzii and the homepage.
+ *
+ * Empty on purpose. The nine entries previously here were invented during the
+ * v2 rebuild and published under the heading "Recenzii reale de pe Google
+ * Maps" — none of the authors appear on the clinic's Google Business Profile.
+ * Publishing fabricated consumer testimonials is sanctionable under OUG
+ * 58/2022 (the Romanian transposition of the EU Omnibus Directive).
+ *
+ * Only add entries here that are copied verbatim from a real review on
+ * https://www.google.com/maps?cid=15236386707900164590 — attribute the author
+ * as first name + surname initial. While this list is empty both pages fall
+ * back to linking the Google profile directly, which is accurate either way.
+ */
+export const reviews: Review[] = [];
