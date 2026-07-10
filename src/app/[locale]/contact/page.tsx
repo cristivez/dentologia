@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Phone, MessageCircle, MapPin, Clock } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -10,18 +11,36 @@ import { CLINIC, SCHEDULE } from "@/lib/constants";
 export const metadata: Metadata = generatePageMetadata({
   title: "Contact Dentist Câmpulung Muscel | Dentologia",
   description:
-    "Contactează Dentologia: telefon 0750 486 564, WhatsApp, adresă Strada General Iosif Teodorescu 2, Câmpulung 115100. Program Luni-Vineri 09:00-19:00.",
+    "Contactează Dentologia: telefon 0750 486 564, WhatsApp, adresă Strada General Iosif Teodorescu 2, Câmpulung 115100. Program Luni-Vineri 09:00-18:00, sâmbătă și duminică închis.",
   path: "/contact",
 });
 
 export default function ContactPage() {
   return (
     <Container as="section" className="py-20 pt-28">
-      <AnimatedSection>
+      <div className="rise">
         <SectionHeading
           title="Contact"
           subtitle="Sunați sau scrieți-ne pentru programări"
         />
+      </div>
+
+      {/* The facade, so patients recognise the door before they arrive. */}
+      <AnimatedSection delay={0.05}>
+        <figure className="mx-auto mb-12 max-w-4xl">
+          <Image
+            src="/photos/storefront.webp"
+            alt="Intrarea clinicii Dentologia, Strada General Iosif Teodorescu 2, Câmpulung Muscel"
+            width={1600}
+            height={900}
+            sizes="(min-width: 1024px) 896px, 100vw"
+            className="rounded-2xl border border-border object-cover"
+            priority
+          />
+          <figcaption className="mt-3 text-center text-sm text-muted">
+            Ne găsiți pe {CLINIC.address.street}, în {CLINIC.address.city}.
+          </figcaption>
+        </figure>
       </AnimatedSection>
 
       {/* CTA Buttons */}

@@ -8,6 +8,17 @@ type PageMetadataOptions = {
   locale?: string;
 };
 
+/**
+ * A real photo of the premises, cropped to 1.91:1 — the ratio Facebook,
+ * WhatsApp and LinkedIn crop to. Anything else and they centre-crop it for us.
+ */
+const OG_IMAGE = {
+  url: `${CLINIC.url}/photos/og-storefront.webp`,
+  width: 1200,
+  height: 628,
+  alt: `Intrarea clinicii ${CLINIC.name}, ${CLINIC.address.city}`,
+} as const;
+
 export function generatePageMetadata({
   title,
   description,
@@ -29,20 +40,13 @@ export function generatePageMetadata({
       siteName: CLINIC.fullName,
       locale: locale === "ro" ? "ro_RO" : "en_US",
       type: "website",
-      images: [
-        {
-          url: `${CLINIC.url}/og-image.png`,
-          width: 1200,
-          height: 630,
-          alt: CLINIC.fullName,
-        },
-      ],
+      images: [OG_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [`${CLINIC.url}/og-image.png`],
+      images: [OG_IMAGE.url],
     },
   };
 }

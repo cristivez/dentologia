@@ -2,7 +2,11 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { MotionProvider } from "@/components/shared/MotionProvider";
@@ -23,6 +27,11 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+/** Without this every route renders on demand (`ƒ`). With it, they prerender (`○`). */
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -39,6 +48,12 @@ export async function generateMetadata({
       locale,
     }),
     metadataBase: new URL(CLINIC.url),
+    // The English pages are a stub: their body copy is still Romanian. Keep
+    // them out of the index until they are actually translated, otherwise
+    // Google crawls a half-translated duplicate of the Romanian site.
+    ...(locale !== routing.defaultLocale && {
+      robots: { index: false, follow: true },
+    }),
     icons: {
       icon: [
         { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
@@ -61,6 +76,8 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as "ro" | "en")) {
     notFound();
   }
+
+  setRequestLocale(locale);
 
   const messages = await getMessages();
 

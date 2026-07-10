@@ -2,9 +2,51 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test.describe("Phase 3 — Homepage", () => {
-  test("homepage renders h1 with Dentologia", async ({ page }) => {
+  test("homepage h1 targets the local search term", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("h1")).toContainText("Dentologia");
+    await expect(page.locator("h1")).toContainText(
+      "Clinică stomatologică în Câmpulung Muscel",
+    );
+  });
+
+  test("homepage prices section shows one category at a time", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const tablist = page.getByRole("tablist", {
+      name: "Categorii de prețuri",
+    });
+    await tablist.scrollIntoViewIfNeeded();
+    await expect(tablist.getByRole("tab")).toHaveCount(7);
+
+    // Exactly one panel, showing only the selected category's rows.
+    const panel = page.locator('[role="tabpanel"]');
+    await expect(panel).toHaveCount(1);
+    await expect(panel.locator("tbody tr")).toHaveCount(2); // Consultații
+  });
+
+  test("switching a homepage price tab swaps the table", async ({ page }) => {
+    await page.goto("/");
+    const tablist = page.getByRole("tablist", {
+      name: "Categorii de prețuri",
+    });
+    await tablist.scrollIntoViewIfNeeded();
+    await tablist.getByRole("tab", { name: "Ortodonție" }).click();
+
+    const panel = page.locator('[role="tabpanel"]');
+    await expect(panel.locator("tbody tr")).toHaveCount(27);
+    await expect(panel).toContainText("Aparat autoligaturant Damon");
+    await expect(
+      tablist.getByRole("tab", { name: "Ortodonție" }),
+    ).toHaveAttribute("aria-selected", "true");
+  });
+
+  test("homepage prices link out to the category page and full list", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator('main a[href="/preturi/general"]')).toBeVisible();
+    await expect(page.locator('main a[href="/preturi"]')).toBeVisible();
   });
 
   test("homepage has CTA buttons", async ({ page }) => {
@@ -37,14 +79,26 @@ test.describe("Phase 3 — Homepage", () => {
 test.describe("Phase 3 — Services Page", () => {
   test("services page renders heading", async ({ page }) => {
     await page.goto("/servicii");
-    await expect(page.locator("h2")).toContainText("Serviciile noastre");
+    await expect(page.locator("h2").first()).toContainText(
+      "Serviciile noastre",
+    );
   });
 
-  test("services page has 3 service cards", async ({ page }) => {
+  test("services page has both the themed and the detailed sections", async ({
+    page,
+  }) => {
     await page.goto("/servicii");
-    const cards = page.locator("main h3");
-    const count = await cards.count();
-    expect(count).toBe(3);
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Servicii detaliate" }),
+    ).toBeVisible();
+    // Three themed cards, each headed by an h2 inside a card.
+    await expect(page.locator("main a[href^='/servicii/']")).toHaveCount(8);
+  });
+
+  test("services page lists every dedicated service page", async ({ page }) => {
+    await page.goto("/servicii");
+    const detailCards = page.locator("main h3");
+    await expect(detailCards).toHaveCount(5);
   });
 
   test("each card has a feature list", async ({ page }) => {
@@ -54,12 +108,28 @@ test.describe("Phase 3 — Services Page", () => {
     expect(count).toBeGreaterThanOrEqual(3);
   });
 
-  test("each card links to prices", async ({ page }) => {
+  test("each themed card links to its dedicated service page", async ({
+    page,
+  }) => {
     await page.goto("/servicii");
-    // Only count links inside main content (exclude header nav)
-    const priceLinks = page.locator('main a[href*="/preturi"]');
-    const count = await priceLinks.count();
-    expect(count).toBe(3);
+    for (const slug of [
+      "urgente-stomatologice",
+      "implant-dentar",
+      "aparat-dentar",
+    ]) {
+      await expect(
+        page.locator(`main a[href="/servicii/${slug}"]`).first(),
+      ).toBeVisible();
+    }
+  });
+
+  test("no link points at the removed ?tab=implant price page", async ({
+    page,
+  }) => {
+    await page.goto("/servicii");
+    await expect(page.locator('a[href*="tab=implant"]')).toHaveCount(0);
+    await page.goto("/");
+    await expect(page.locator('a[href*="tab=implant"]')).toHaveCount(0);
   });
 
   test("services page passes accessibility", async ({ page }) => {
@@ -82,7 +152,7 @@ test.describe("Phase 3 — Mobile", () => {
     await page.goto("/servicii");
     const cards = page.locator("main h3");
     const count = await cards.count();
-    expect(count).toBe(3);
+    expect(count).toBe(5);
 
     // All cards should be stacked vertically — check first 2 cards have different Y positions
     const card1 = page.locator("main h3").first();

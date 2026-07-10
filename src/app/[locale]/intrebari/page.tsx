@@ -25,12 +25,12 @@ export default function FaqPage() {
         ]}
       />
       <Container as="section" className="py-20 pt-28">
-        <AnimatedSection>
+        <div className="rise">
           <SectionHeading
             title="Întrebări frecvente"
             subtitle="Răspunsuri la cele mai frecvente întrebări despre serviciile noastre"
           />
-        </AnimatedSection>
+        </div>
 
         <div className="max-w-3xl mx-auto space-y-3">
           {faqItems.map((item, i) => (
