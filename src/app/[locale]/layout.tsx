@@ -16,8 +16,7 @@ import { FloatingContactFAB } from "@/components/shared/FloatingContactFAB";
 import { CLINIC } from "@/lib/constants";
 import { generatePageMetadata } from "@/lib/metadata";
 import { LocalBusinessJsonLd, WebSiteJsonLd } from "@/components/shared/JsonLd";
-import { CookieConsent } from "@/components/shared/CookieConsent";
-import { Analytics } from "@/components/shared/Analytics";
+import { CloudflareAnalytics } from "@/components/shared/CloudflareAnalytics";
 import "../globals.css";
 
 const montserrat = Montserrat({
@@ -95,12 +94,11 @@ export default async function LocaleLayout({
             </main>
             <Footer />
             <FloatingContactFAB />
-            <CookieConsent />
           </MotionProvider>
         </NextIntlClientProvider>
         <LocalBusinessJsonLd />
         <WebSiteJsonLd />
-        <Analytics />
+        <CloudflareAnalytics />
       </body>
     </html>
   );

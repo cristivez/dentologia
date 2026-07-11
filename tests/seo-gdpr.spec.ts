@@ -37,28 +37,14 @@ test.describe("Phase 6 — SEO", () => {
 });
 
 test.describe("Phase 6 — GDPR", () => {
-  test("cookie banner appears on first visit", async ({ page }) => {
+  test("no cookie-consent banner (analytics is cookieless)", async ({
+    page,
+  }) => {
     await page.goto("/", { waitUntil: "networkidle" });
-    // Wait for 1.5s delay + render
+    // The old banner appeared after a 1.5s delay; wait past that and assert
+    // it never shows, since Cloudflare Web Analytics sets no cookies.
     await page.waitForTimeout(2000);
-    await expect(page.locator("text=Folosim cookie-uri")).toBeVisible();
-  });
-
-  test("accepting cookies hides banner", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-    await page.waitForTimeout(2000);
-    await page.locator("button", { hasText: "Accept" }).click();
-    await expect(page.locator("text=Folosim cookie-uri")).not.toBeVisible();
-  });
-
-  test("cookie banner does not reappear after accept", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-    await page.waitForTimeout(2000);
-    await page.locator("button", { hasText: "Accept" }).click();
-    // Reload
-    await page.reload({ waitUntil: "networkidle" });
-    await page.waitForTimeout(2000);
-    await expect(page.locator("text=Folosim cookie-uri")).not.toBeVisible();
+    await expect(page.locator("text=Folosim cookie-uri")).toHaveCount(0);
   });
 
   test("privacy page renders", async ({ page }) => {

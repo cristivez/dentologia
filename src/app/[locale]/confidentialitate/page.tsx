@@ -42,11 +42,11 @@ export default function PrivacyPage() {
             2. Date colectate
           </h3>
           <p>
-            Colectăm doar datele strict necesare pentru funcționarea site-ului
-            și îmbunătățirea experienței dvs.: date de navigare anonime (prin
-            cookie-uri analitice, cu consimțământul dvs.) și datele pe care ni
-            le furnizați voluntar prin telefon, WhatsApp sau email (nume, număr
-            de telefon, detalii programare).
+            Colectăm doar datele strict necesare pentru funcționarea site-ului:
+            statistici de navigare anonime și agregate (prin Cloudflare Web
+            Analytics, fără cookie-uri și fără date cu caracter personal) și
+            datele pe care ni le furnizați voluntar prin telefon, WhatsApp sau
+            email (nume, număr de telefon, detalii programare).
           </p>
         </section>
 
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           <p>
             Datele sunt prelucrate exclusiv pentru: gestionarea programărilor,
             comunicarea cu pacienții, îmbunătățirea serviciilor și analiza
-            traficului pe site (Google Analytics, doar cu consimțământul dvs.).
+            anonimă a traficului pe site (statistici agregate, fără cookie-uri).
           </p>
         </section>
 
@@ -66,10 +66,11 @@ export default function PrivacyPage() {
             4. Cookie-uri
           </h3>
           <p>
-            Site-ul folosește cookie-uri esențiale pentru funcționare și
-            cookie-uri analitice (Google Analytics) care sunt activate doar după
-            acceptarea de către dvs. prin bannerul de consimțământ. Puteți
-            modifica preferințele oricând ștergând cookie-urile din browser.
+            Site-ul nu folosește cookie-uri de urmărire sau de publicitate.
+            Pentru statistici de trafic folosim Cloudflare Web Analytics, o
+            soluție care nu plasează cookie-uri și nu colectează date cu
+            caracter personal — de aceea nu este necesar un banner de
+            consimțământ pentru cookie-uri.
           </p>
         </section>
 
@@ -78,9 +79,9 @@ export default function PrivacyPage() {
             5. Durata stocării
           </h3>
           <p>
-            Datele de navigare sunt stocate conform politicii Google Analytics
-            (26 de luni). Datele de contact furnizate pentru programări sunt
-            păstrate pe durata relației cu pacientul.
+            Statisticile de trafic sunt anonime și agregate, păstrate conform
+            politicii Cloudflare. Datele de contact furnizate pentru programări
+            sunt păstrate pe durata relației cu pacientul.
           </p>
         </section>
 
