@@ -35,46 +35,99 @@ This applies to EVERY change — new features, small tweaks, text edits, color c
 
 ## Project Overview
 
-Dental clinic website for Dentologia in Campulung, Romania. Static single-page site hosted on GitHub Pages at dentologia.ro.
+Dental clinic website for Dentologia in Câmpulung Muscel, Romania. Multi-page Next.js 16+ App Router site deployed to Cloudflare Workers at dentologia.ro.
 
 ## Tech Stack
 
-- HTML5, CSS3, vanilla JavaScript (no frameworks)
-- GitHub Pages hosting
-- Google Fonts (Montserrat)
+- **Framework**: Next.js 16+ (App Router, Server Components by default)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4 with `@theme inline` CSS variable mapping
+- **Animation**: Framer Motion 12 (LazyMotion with domAnimation)
+- **i18n**: next-intl (Romanian default, English stub ready)
+- **Carousel**: embla-carousel-react
+- **Icons**: lucide-react
+- **Font**: Montserrat 400/600/700 via next/font/google
+- **Testing**: Vitest (unit) + Playwright + @axe-core/playwright (E2E + a11y)
+- **Deployment**: Cloudflare Workers via @opennextjs/cloudflare
+- **CI/CD**: GitHub Actions
 
-## Key Files
+## Project Structure
 
-- `index.html` — single-page site
-- `assets/style.css` — mobile-first styles
-- `script.js` — interactivity (menu, tabs, animations)
-- `assets/logo.png` — logo
-- `CNAME` — custom domain
-- `Prices.md` — source of truth for pricing
+```
+src/
+├── app/
+│   ├── [locale]/           # i18n dynamic route
+│   │   ├── layout.tsx      # Main layout (font, providers, header, footer, FAB, cookie, JSON-LD)
+│   │   ├── page.tsx        # Homepage (Hero)
+│   │   ├── servicii/       # Services page (3 cards)
+│   │   ├── preturi/        # Prices page (7 tabs + search, client component)
+│   │   ├── recenzii/       # Reviews page (embla carousel, client component)
+│   │   ├── intrebari/      # FAQ page (native details/summary)
+│   │   ├── contact/        # Contact page (CTA, schedule, map, social)
+│   │   ├── confidentialitate/ # Privacy/GDPR page
+│   │   ├── error.tsx       # Error boundary
+│   │   └── not-found.tsx   # 404 page
+│   ├── layout.tsx          # Root layout (passthrough)
+│   ├── global-error.tsx    # Global error boundary
+│   ├── sitemap.ts          # Dynamic sitemap
+│   ├── robots.ts           # Robots.txt
+│   └── manifest.ts         # PWA manifest
+├── components/
+│   ├── ui/                 # Primitives: Button, Card, Container, SectionHeading, Badge
+│   ├── layout/             # Header, Footer
+│   └── shared/             # AnimatedSection, FloatingContactFAB, MotionProvider, CookieConsent, Analytics, JsonLd
+├── data/                   # Static data: services.ts, faq.ts, reviews.ts
+├── hooks/                  # useScrollDirection, useIsMobile, usePrefersReducedMotion
+├── i18n/                   # routing.ts, request.ts, navigation.ts
+├── lib/                    # utils.ts (cn), constants.ts (CLINIC, SCHEDULE), metadata.ts
+├── messages/               # ro.json, en.json
+└── middleware.ts            # next-intl middleware
+```
 
 ## Design System
 
-- Background: `#6b706d`, Accent: `#e5dbc0`, Dark: `#555a57`, WhatsApp: `#25D366`
-- Font: Montserrat 400/600/700
-- Mobile-first with breakpoints: 500px, 600px, 700px, 768px, 900px
+- **Theme**: Dark only (no light mode toggle)
+- **Colors**: Background `#5f6361`, Foreground `#ece3cb`, Surface `#555a57`, Muted `#e8e0c8`, Primary `#ece3cb`, WhatsApp `#25d366` (text: `#1a3d2a`)
+- **Font**: Montserrat 400/600/700
+- **All text passes WCAG AA contrast** (4.5:1 minimum for normal text)
+- CSS variables defined in `src/app/globals.css`, mapped to Tailwind via `@theme inline`
+
+## Development
+
+```bash
+npm run dev          # Dev server on port 3001
+npm run test:unit    # Vitest unit tests
+npm test             # Playwright E2E tests
+npm run build        # Next.js production build
+npm run preview      # Cloudflare Workers local preview
+npm run deploy       # Deploy to Cloudflare Workers
+```
+
+## Mobile-First Rules
+
+1. Use `min-h-dvh` not `100vh` (iOS address bar)
+2. 44px minimum touch targets (`min-h-[44px] min-w-[44px]`)
+3. Gate hover effects: `[@media(hover:hover)]:hover:...`
+4. iOS scroll lock: `overflow: hidden; touch-action: none; overscroll-behavior: none`
+5. Only animate `transform` and `opacity`
+6. Respect `prefers-reduced-motion`
+7. Use `useSyncExternalStore` for hydration-safe hooks
 
 ## Automatic Skill Usage
 
 When working on this project, automatically use the appropriate slash command based on the task:
 
-- **`/web-fetch`** — Use when the task involves fetching data from external URLs, scraping web pages, or extracting information from links provided by the user.
-- **`/web-dev`** — Use when the task involves writing, editing, or debugging HTML, CSS, or JavaScript code for this website. This includes adding sections, fixing layout issues, modifying styles, or changing functionality.
-- **`/ui-ux`** — Use when the task involves reviewing or improving visual design, user experience, accessibility, mobile responsiveness, or conversion optimization.
-- **`/seo`** — Use when the task involves SEO audits, meta tags, structured data, Open Graph, keyword optimization, or local search improvements.
-
-If a task spans multiple skills (e.g., "add a reviews section" = web-dev + ui-ux), use the primary skill for implementation and validate with the secondary skill after.
+- **`/web-fetch`** — Fetching data from external URLs
+- **`/web-dev`** — Writing/editing/debugging code
+- **`/ui-ux`** — Visual design, UX, accessibility, responsiveness
+- **`/seo`** — SEO audits, meta tags, structured data, local search
 
 ## Rules
 
 - All website text content in Romanian
 - Phone: 0750 486 564 | WhatsApp: wa.me/40750486564
-- Address: Strada General Iosif Teodorescu 2, Campulung 115100
-- Keep everything in a single HTML page
-- Always maintain mobile responsiveness — test all changes against ALL breakpoints
-- No external JS/CSS frameworks
+- Address: Strada General Iosif Teodorescu 2, Câmpulung 115100
 - Every change must work on both mobile and desktop
+- Run `npm run test:unit` and `npm test -- --project=chromium` to verify changes
+- Server Components by default; only use `"use client"` when interactivity is required
+- Prices source of truth: `src/data/services.ts` (extracted from `Prices.md`)

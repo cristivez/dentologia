@@ -1,0 +1,18 @@
+{
+  "name": "dentologia",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Keep the workers.dev URL alive alongside the custom domains — declaring
+  // routes disables it by default, which silently killed the preview link.
+  "workers_dev": true,
+  // Production domains — attached as Worker custom domains.
+  "routes": [
+    { "pattern": "dentologia.ro", "custom_domain": true },
+    { "pattern": "www.dentologia.ro", "custom_domain": true }
+  ]
+}
