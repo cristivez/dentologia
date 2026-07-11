@@ -21,8 +21,8 @@ type PageMetadataOptions = {
 const OG_IMAGE = {
   url: `${CLINIC.url}/photos/og-storefront.jpg`,
   width: 1200,
-  height: 628,
-  alt: `Intrarea clinicii ${CLINIC.name}, ${CLINIC.address.city}`,
+  height: 630,
+  alt: `${CLINIC.name} — clinică stomatologică în ${CLINIC.address.city} Muscel`,
 } as const;
 
 export function generatePageMetadata({

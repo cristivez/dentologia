@@ -92,30 +92,57 @@ await build({
   height: 900,
 });
 
-// Open Graph card, cropped from the same composite to 1.91:1 (the ratio
-// Facebook / WhatsApp / LinkedIn crop to), centred on the door.
+// Open Graph card — a *designed* social-share image, not a bare photo crop.
+// The real storefront (storefront.webp, built just above) is the background;
+// a brand gradient darkens the lower-left so the name, tagline, services and
+// phone read clearly. Only this gradient + text layer is composited — the
+// photograph underneath is untouched (no fabricated details on the premises).
+// The phone mirrors CLINIC.phoneDisplay; keep the two in sync if it changes.
 {
-  const src = "photo-1-composite.jpg";
-  const { width, height } = await sharp(`${SRC}/${src}`).metadata();
-  const bandWidth = Math.min(Math.round(height * 1.91), width);
-  const left = Math.round((width - bandWidth) / 2);
-  await build({
-    src,
-    out: "og-storefront.webp",
-    wb: 0.5,
-    brightness: 8,
-    crop: { left, top: 0, width: bandWidth, height },
-    width: 1200,
-    height: 628,
-    quality: 84,
-  });
+  const W = 1200;
+  const H = 630; // 1.91:1, the ratio Facebook / WhatsApp / LinkedIn crop to
+  const bg = await sharp(`${OUT}/storefront.webp`)
+    .resize({ width: W, height: H, fit: "cover", position: "centre" })
+    .toBuffer();
 
-  // JPG copy for social previews. WhatsApp and Facebook render WebP og:image
-  // previews inconsistently — silent failures on older Android clients — so the
-  // metadata points at this JPG, the universally-supported og:image format.
-  await sharp(`${OUT}/og-storefront.webp`)
-    .jpeg({ quality: 84 })
-    .toFile(`${OUT}/og-storefront.jpg`);
+  // lucide "phone" glyph, stroked inside the call-to-action pill.
+  const phoneIcon =
+    "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z";
+
+  const overlay = Buffer.from(
+    `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="v" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#141514" stop-opacity="0.06"/>
+          <stop offset="0.45" stop-color="#141514" stop-opacity="0.34"/>
+          <stop offset="1" stop-color="#0e0f0e" stop-opacity="0.94"/>
+        </linearGradient>
+        <linearGradient id="h" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#0e0f0e" stop-opacity="0.74"/>
+          <stop offset="0.55" stop-color="#0e0f0e" stop-opacity="0.12"/>
+          <stop offset="1" stop-color="#0e0f0e" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width="${W}" height="${H}" fill="url(#v)"/>
+      <rect width="${W}" height="${H}" fill="url(#h)"/>
+      <rect x="72" y="330" width="60" height="5" rx="2.5" fill="#ece3cb"/>
+      <text x="70" y="420" font-family="Helvetica Neue, Arial, sans-serif" font-size="80" font-weight="700" fill="#ece3cb" letter-spacing="-1">Dentologia</text>
+      <text x="72" y="470" font-family="Helvetica Neue, Arial, sans-serif" font-size="33" font-weight="500" fill="#ece3cb" fill-opacity="0.93">Clinică stomatologică în Câmpulung Muscel</text>
+      <text x="72" y="512" font-family="Helvetica Neue, Arial, sans-serif" font-size="25" font-weight="600" fill="#ece3cb" fill-opacity="0.70" letter-spacing="0.3">Implant · Aparat dentar · Albire · Urgențe</text>
+      <g transform="translate(72,538)">
+        <rect x="0" y="0" width="300" height="52" rx="26" fill="#ece3cb"/>
+        <g transform="translate(24,14)" stroke="#17181a" stroke-width="2.1" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${phoneIcon}"/></g>
+        <text x="62" y="34" font-family="Helvetica Neue, Arial, sans-serif" font-size="27" font-weight="700" fill="#17181a" letter-spacing="0.5">0750 486 564</text>
+      </g>
+    </svg>`,
+  );
+
+  const card = sharp(bg).composite([{ input: overlay, top: 0, left: 0 }]);
+  await card.clone().webp({ quality: 82, effort: 6 }).toFile(`${OUT}/og-storefront.webp`);
+  // JPG copy: WhatsApp/Facebook render WebP og:image inconsistently (silent
+  // failures on older Android), so the metadata points at this JPG.
+  await card.clone().jpeg({ quality: 86 }).toFile(`${OUT}/og-storefront.jpg`);
+  console.log(`  ${"og-storefront (webp+jpg)".padEnd(28)} designed card ${W}x${H}`);
 }
 
 // Reception — strongest warm cast (R/B 1.26). Crop away dead ceiling.
