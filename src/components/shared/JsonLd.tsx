@@ -35,6 +35,10 @@ export function LocalBusinessJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": ["Dentist", "LocalBusiness", "MedicalClinic"],
+    // Stable entity anchor: every schema block that references the clinic by
+    // this @id gets merged into one knowledge-graph node instead of Google
+    // seeing many similar-but-separate "Dentologia" entities.
+    "@id": `${CLINIC.url}/#clinic`,
     name: CLINIC.name,
     description:
       "Clinică stomatologică modernă în Câmpulung Muscel. Implant dentar, aparat dentar, albire, detartraj, urgențe stomatologice.",
@@ -100,6 +104,7 @@ export function ServiceJsonLd({
     procedureType: "https://schema.org/TherapeuticProcedure",
     provider: {
       "@type": "Dentist",
+      "@id": `${CLINIC.url}/#clinic`,
       name: CLINIC.name,
       url: CLINIC.url,
       telephone: CLINIC.phone,
@@ -181,7 +186,12 @@ export function OfferCatalogJsonLd({
       name: item.name,
       priceCurrency: parsed.currency,
       availability: "https://schema.org/InStock",
-      seller: { "@type": "Dentist", name: CLINIC.name, url: CLINIC.url },
+      seller: {
+        "@type": "Dentist",
+        "@id": `${CLINIC.url}/#clinic`,
+        name: CLINIC.name,
+        url: CLINIC.url,
+      },
     };
 
     return [
@@ -231,6 +241,7 @@ export function PhysicianJsonLd({
     ...(m.cmdr && { identifier: m.cmdr }),
     worksFor: {
       "@type": "Dentist",
+      "@id": `${CLINIC.url}/#clinic`,
       name: CLINIC.name,
       url: CLINIC.url,
       address: {
@@ -282,11 +293,13 @@ export function BlogPostingJsonLd({
     mainEntityOfPage: `${CLINIC.url}${path}`,
     author: {
       "@type": "Organization",
+      "@id": `${CLINIC.url}/#clinic`,
       name: CLINIC.name,
       url: CLINIC.url,
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${CLINIC.url}/#clinic`,
       name: CLINIC.name,
       url: CLINIC.url,
       logo: {

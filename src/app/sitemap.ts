@@ -34,20 +34,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // Articles carry their real publication date — stamping every URL with the
+  // build time teaches Google to distrust the sitemap's lastmod entirely.
   const blogRoutes = blogPosts.map((post) => ({
     path: `/blog/${post.slug}`,
     priority: 0.6,
+    lastModified: new Date(post.datePublished),
   }));
 
-  return [
+  const routes: { path: string; priority: number; lastModified?: Date }[] = [
     ...staticRoutes,
     ...serviceRoutes,
     ...priceCategoryRoutes,
     ...blogRoutes,
-  ].map(({ path, priority }) => ({
-    url: `${CLINIC.url}${path}`,
-    lastModified,
-    changeFrequency: path === "/preturi" ? "weekly" : "monthly",
-    priority,
+  ];
+
+  return routes.map((route) => ({
+    url: `${CLINIC.url}${route.path}`,
+    lastModified: route.lastModified ?? lastModified,
+    changeFrequency: route.path === "/preturi" ? "weekly" : "monthly",
+    priority: route.priority,
   }));
 }

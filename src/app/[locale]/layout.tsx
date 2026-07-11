@@ -50,9 +50,23 @@ export async function generateMetadata({
     // The English pages are a stub: their body copy is still Romanian. Keep
     // them out of the index until they are actually translated, otherwise
     // Google crawls a half-translated duplicate of the Romanian site.
-    ...(locale !== routing.defaultLocale && {
-      robots: { index: false, follow: true },
-    }),
+    // Romanian pages opt into unrestricted previews — Google recommends
+    // large image previews and unlimited snippets for AI Overviews and
+    // Discover eligibility.
+    robots:
+      locale !== routing.defaultLocale
+        ? { index: false, follow: true }
+        : {
+            index: true,
+            follow: true,
+            googleBot: {
+              index: true,
+              follow: true,
+              "max-snippet": -1,
+              "max-image-preview": "large",
+              "max-video-preview": -1,
+            },
+          },
     icons: {
       icon: [
         { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
