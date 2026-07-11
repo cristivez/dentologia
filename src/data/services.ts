@@ -49,7 +49,7 @@ export const serviceCategories: ServiceCategory[] = [
     slug: "general",
     label: "Consultații",
     h1: "Prețuri consultații stomatologice în Câmpulung Muscel",
-    title: "Preț Consultație Stomatologică Câmpulung | 100 lei | Dentologia",
+    title: "Consultație Stomatologică Câmpulung | 100 lei | Dentologia",
     metaDescription:
       "Consultație de specialitate 100 lei, tratament de urgență 250 lei la Dentologia, Câmpulung Muscel. Prețuri transparente, fără costuri ascunse.",
     intro:
@@ -63,7 +63,7 @@ export const serviceCategories: ServiceCategory[] = [
     slug: "profilaxie",
     label: "Profilaxie",
     h1: "Prețuri profilaxie și igienizare dentară în Câmpulung Muscel",
-    title: "Prețuri Profilaxie Dentară Câmpulung | de la 100 lei | Dentologia",
+    title: "Profilaxie Dentară Câmpulung | de la 100 lei | Dentologia",
     metaDescription:
       "Detartraj 150 lei, pachet detartraj + periaj + AirFlow 250 lei, fluorizare 150 lei, sigilări 200 lei. Profilaxie dentară în Câmpulung Muscel.",
     intro:
@@ -111,7 +111,7 @@ export const serviceCategories: ServiceCategory[] = [
     slug: "endodontie",
     label: "Endodonție",
     h1: "Prețuri tratament de canal (endodonție) în Câmpulung Muscel",
-    title: "Preț Tratament de Canal Câmpulung | de la 250 lei | Dentologia",
+    title: "Prețuri Endodonție Câmpulung | de la 250 lei | Dentologia",
     metaDescription:
       "Tratament endodontic rotativ de la 250 lei (monoradicular), 300–500 lei pluriradicular. Retratament, drenaj endodontic, ablație pivot. Câmpulung Muscel.",
     intro:
@@ -144,7 +144,7 @@ export const serviceCategories: ServiceCategory[] = [
     slug: "chirurgie",
     label: "Chirurgie",
     h1: "Prețuri extracții și chirurgie orală în Câmpulung Muscel",
-    title: "Preț Extracție Dentară Câmpulung | de la 150 lei | Dentologia",
+    title: "Prețuri Chirurgie Orală Câmpulung | Extracții | Dentologia",
     metaDescription:
       "Extracție monoradiculară 150–200 lei, pluriradiculară 250–300 lei, molar de minte 400–600 lei, incizie și drenaj abces 200 lei. Câmpulung Muscel.",
     intro:

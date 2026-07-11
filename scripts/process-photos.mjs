@@ -109,6 +109,13 @@ await build({
     height: 628,
     quality: 84,
   });
+
+  // JPG copy for social previews. WhatsApp and Facebook render WebP og:image
+  // previews inconsistently — silent failures on older Android clients — so the
+  // metadata points at this JPG, the universally-supported og:image format.
+  await sharp(`${OUT}/og-storefront.webp`)
+    .jpeg({ quality: 84 })
+    .toFile(`${OUT}/og-storefront.jpg`);
 }
 
 // Reception — strongest warm cast (R/B 1.26). Crop away dead ceiling.
