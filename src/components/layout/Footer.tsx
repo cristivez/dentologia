@@ -60,7 +60,7 @@ export function Footer() {
                 alt={`${CLINIC.name} logo`}
                 width={44}
                 height={44}
-                className="rounded-lg"
+                className="logo-glow rounded-lg"
               />
               <span className="text-lg font-bold text-foreground">
                 {CLINIC.name}

@@ -131,6 +131,18 @@ body {
 }
 
 /*
+ * The logo artwork is dark-on-dark against the site background, so a normal
+ * dark drop shadow disappears. A faint cream halo — echoing the backlit logo
+ * sign in the reception — lifts it off the background. Two layers: a tight
+ * rim to define the edge, then a soft wider glow. `drop-shadow` (not
+ * box-shadow) so the halo follows the circular alpha, not the image box.
+ */
+.logo-glow {
+  filter: drop-shadow(0 0 1px rgba(236, 227, 203, 0.45))
+    drop-shadow(0 2px 12px rgba(236, 227, 203, 0.28));
+}
+
+/*
  * Smooth open/close for the native <details> FAQ accordions.
  *
  * Pure progressive enhancement: browsers that support `::details-content`
