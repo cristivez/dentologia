@@ -93,7 +93,10 @@ jobs:
           # Public Cloudflare Web Analytics site token (safe to expose; it
           # appears in the page HTML). Add it as a repo secret to enable stats.
           NEXT_PUBLIC_CF_BEACON_TOKEN: ${{ secrets.NEXT_PUBLIC_CF_BEACON_TOKEN }}
-      - run: npx wrangler deploy
+      # opennextjs-cloudflare deploy, NOT bare wrangler deploy: it populates
+      # the incremental cache first. Without it every prerendered dynamic
+      # route (/servicii/[slug], /preturi/[slug], /blog/[slug]) 404s.
+      - run: npx opennextjs-cloudflare deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
