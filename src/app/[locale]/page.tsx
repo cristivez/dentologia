@@ -10,6 +10,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { AnimatedGroup, AnimatedItem } from "@/components/shared/AnimatedGroup";
+import { Parallax } from "@/components/shared/Parallax";
 import { GoogleRating } from "@/components/shared/GoogleRating";
 import { PriceTabs } from "@/components/shared/PriceTabs";
 import { faqItems } from "@/data/faq";
@@ -222,14 +223,16 @@ export default function HomePage({
           </AnimatedSection>
           <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
             <AnimatedSection delay={0.1}>
-              <Image
-                src="/photos/receptie.webp"
-                alt="Recepția clinicii Dentologia din Câmpulung Muscel"
-                width={1152}
-                height={1475}
-                sizes="(min-width: 768px) 40vw, 100vw"
-                className="rounded-2xl border border-border object-cover"
-              />
+              <Parallax className="rounded-2xl border border-border" amount={6}>
+                <Image
+                  src="/photos/receptie.webp"
+                  alt="Recepția clinicii Dentologia din Câmpulung Muscel"
+                  width={1152}
+                  height={1475}
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  className="block w-full object-cover transition-transform duration-700 ease-out [@media(hover:hover)]:hover:scale-[1.03]"
+                />
+              </Parallax>
             </AnimatedSection>
 
             <AnimatedGroup className="space-y-4">
@@ -268,14 +271,19 @@ export default function HomePage({
               },
             ].map((img) => (
               <AnimatedItem key={img.src}>
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  width={760}
-                  height={950}
-                  sizes="(min-width: 640px) 30vw, 100vw"
-                  className="h-full w-full rounded-2xl border border-border object-cover"
-                />
+                <Parallax
+                  className="h-full rounded-2xl border border-border"
+                  amount={8}
+                >
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={760}
+                    height={950}
+                    sizes="(min-width: 640px) 30vw, 100vw"
+                    className="block w-full object-cover transition-transform duration-700 ease-out [@media(hover:hover)]:hover:scale-[1.04]"
+                  />
+                </Parallax>
               </AnimatedItem>
             ))}
           </AnimatedGroup>

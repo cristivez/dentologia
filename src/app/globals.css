@@ -129,3 +129,29 @@ body {
 .skip-to-content:focus {
   top: 0;
 }
+
+/*
+ * Smooth open/close for the native <details> FAQ accordions.
+ *
+ * Pure progressive enhancement: browsers that support `::details-content`
+ * (and `interpolate-size` for the height keyword) animate the panel; every
+ * other browser snaps open exactly as it does today, with the markup and its
+ * no-JS / crawler behaviour untouched. Scoped to users who allow motion.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      content-visibility 300ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
