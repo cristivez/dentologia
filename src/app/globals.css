@@ -131,15 +131,16 @@ body {
 }
 
 /*
- * The logo artwork is dark-on-dark against the site background, so a normal
- * dark drop shadow disappears. A faint cream halo — echoing the backlit logo
- * sign in the reception — lifts it off the background. Two layers: a tight
- * rim to define the edge, then a soft wider glow. `drop-shadow` (not
- * box-shadow) so the halo follows the circular alpha, not the image box.
+ * The logo is a dark circle on transparency, dark-on-dark against the site
+ * background, so a normal drop shadow disappears. A single soft cream halo —
+ * echoing the backlit logo sign in the reception — lifts it off. One layer,
+ * centred, no offset: an earlier tight rim + `rounded-lg` made the circular
+ * logo read as a boxed rounded square at small (header) sizes. Used together
+ * with `rounded-full`, so any clip edge coincides with the circle. Uses
+ * `drop-shadow` (not box-shadow) so the halo follows the alpha, not the box.
  */
 .logo-glow {
-  filter: drop-shadow(0 0 1px rgba(236, 227, 203, 0.45))
-    drop-shadow(0 2px 12px rgba(236, 227, 203, 0.28));
+  filter: drop-shadow(0 0 8px rgba(236, 227, 203, 0.35));
 }
 
 /*

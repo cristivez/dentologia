@@ -118,12 +118,17 @@ function CategoryNav({ activeSlug }: { activeSlug: ServiceCategorySlug }) {
       <nav
         aria-label="Categorii de prețuri"
         className={cn(
-          "sticky z-30 -mx-4 mb-10 bg-background/90 px-4 py-3 backdrop-blur-lg sm:-mx-6 sm:px-6",
+          // Solid page-colored band, NOT a translucent blur: the header
+          // auto-hides on scroll, and a `bg-background/90 backdrop-blur` strip
+          // let price rows ghost through behind the pills and janked on mobile
+          // Safari (blur on a moving header + a sticky bar). Solid + same colour
+          // as the page reads as seamless and covers scrolling content cleanly.
+          "sticky z-30 -mx-4 mb-10 bg-background px-4 py-3 sm:-mx-6 sm:px-6",
           "top-[60px]",
-          // Once stuck, paint the strip the auto-hiding header leaves behind,
-          // otherwise price rows scroll through it above the pills.
+          // Once stuck, fill the 60px the auto-hiding header leaves behind so
+          // rows never show above the pills.
           isStuck &&
-            "before:absolute before:inset-x-0 before:bottom-full before:h-[60px] before:bg-background/90 before:backdrop-blur-lg",
+            "before:absolute before:inset-x-0 before:bottom-full before:h-[60px] before:bg-background",
         )}
       >
         <ul className="scrollbar-none flex gap-2 overflow-x-auto">

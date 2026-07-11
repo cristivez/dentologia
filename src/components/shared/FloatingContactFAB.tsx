@@ -38,7 +38,7 @@ export function FloatingContactFAB() {
           aria-hidden="true"
         />
       )}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col-reverse items-end gap-3">
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
         <AnimatePresence>
           {isOpen && (
             <>
@@ -48,7 +48,7 @@ export function FloatingContactFAB() {
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                transition={{ duration: 0.2, delay: 0.05 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
                 aria-label="Sună acum"
               >
                 <Phone size={18} aria-hidden="true" />
@@ -62,7 +62,7 @@ export function FloatingContactFAB() {
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                transition={{ duration: 0.2, delay: 0.1 }}
+                transition={{ duration: 0.2, delay: 0.05 }}
                 aria-label="WhatsApp"
               >
                 <MessageCircle size={18} aria-hidden="true" />
