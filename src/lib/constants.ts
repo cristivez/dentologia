@@ -18,8 +18,8 @@ export const CLINIC = {
     lng: 25.0412075,
   },
   social: {
-    facebook: "https://www.facebook.com/profile.php?id=61575751498702",
-    instagram: "https://www.instagram.com/dentologia.ro/",
+    facebook: "https://www.facebook.com/dentologia",
+    instagram: "https://www.instagram.com/dentologia.med/",
     google: "https://www.google.com/maps?cid=15236386707900164590",
   },
   googleMapsEmbed:
