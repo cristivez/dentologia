@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 type ContainerProps = {
   children: React.ReactNode;
   className?: string;
-  as?: "div" | "section" | "main";
+  as?: "div" | "section" | "main" | "article";
 };
 
 export function Container({

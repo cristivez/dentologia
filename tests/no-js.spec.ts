@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { totalServiceItems, serviceCategories } from "../src/data/services";
+import { blogPosts } from "../src/data/blogPosts";
 
 /**
  * Above-the-fold content must be painted by the server, not revealed by
@@ -100,6 +101,27 @@ test.describe("Above-the-fold content renders without JavaScript", () => {
     await expect(
       page.getByRole("heading", { level: 2, name: "Serviciile noastre" }),
     ).toBeVisible();
+  });
+
+  test("blog index lists every article with JS off", async ({ page }) => {
+    await page.goto("/blog");
+    await expect(page.locator("h1")).toBeVisible();
+    await expect(page.locator("main a[href^='/blog/']")).toHaveCount(
+      blogPosts.length,
+    );
+  });
+
+  test("blog article renders h1, hero image and CTA with JS off", async ({
+    page,
+  }) => {
+    await page.goto(`/blog/${blogPosts[0].slug}`);
+    const h1 = page.locator("h1");
+    await expect(h1).toBeVisible();
+    await expect(h1).toHaveText(blogPosts[0].h1);
+    await expect(page.locator("article img").first()).toBeVisible();
+    await expect(
+      page.locator('a[href="tel:+40750486564"]').first(),
+    ).toBeAttached();
   });
 
   /**

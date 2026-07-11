@@ -40,6 +40,7 @@ test.describe("Phase 2 — Layout", () => {
       "/echipa",
       "/recenzii",
       "/intrebari",
+      "/blog",
       "/contact",
     ]) {
       await expect(nav.locator(`a[href="${href}"]`)).toBeVisible();
@@ -135,6 +136,7 @@ test.describe("Phase 2 — Mobile Layout", () => {
       "/echipa",
       "/recenzii",
       "/intrebari",
+      "/blog",
       "/contact",
     ]) {
       await expect(mobileNav.locator(`a[href="${href}"]`)).toBeVisible();

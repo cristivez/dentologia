@@ -6,6 +6,8 @@ type PageMetadataOptions = {
   description: string;
   path: string;
   locale?: string;
+  /** Page-specific social card (e.g. a blog hero). JPG — see OG_IMAGE note. */
+  ogImage?: { url: string; alt: string };
 };
 
 /**
@@ -28,8 +30,17 @@ export function generatePageMetadata({
   description,
   path,
   locale = "ro",
+  ogImage,
 }: PageMetadataOptions): Metadata {
   const url = `${CLINIC.url}${path}`;
+  const image = ogImage
+    ? {
+        url: `${CLINIC.url}${ogImage.url}`,
+        width: 1200,
+        height: 627,
+        alt: ogImage.alt,
+      }
+    : OG_IMAGE;
 
   return {
     title,
@@ -44,13 +55,13 @@ export function generatePageMetadata({
       siteName: CLINIC.fullName,
       locale: locale === "ro" ? "ro_RO" : "en_US",
       type: "website",
-      images: [OG_IMAGE],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [OG_IMAGE.url],
+      images: [image.url],
     },
   };
 }

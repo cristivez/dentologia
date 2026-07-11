@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/echipa", label: "Echipa" },
   { href: "/recenzii", label: "Recenzii" },
   { href: "/intrebari", label: "Întrebări" },
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 

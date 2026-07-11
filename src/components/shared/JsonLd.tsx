@@ -253,6 +253,52 @@ export function PhysicianJsonLd({
   );
 }
 
+/**
+ * BlogPosting for the patient-education articles. The author is the clinic
+ * (an Organization), not an invented person — no fake bylines on YMYL content.
+ */
+export function BlogPostingJsonLd({
+  headline,
+  description,
+  path,
+  image,
+  datePublished,
+}: {
+  headline: string;
+  description: string;
+  path: string;
+  image: string;
+  datePublished: string;
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline,
+    description,
+    image: `${CLINIC.url}${image}`,
+    datePublished,
+    dateModified: datePublished,
+    inLanguage: "ro",
+    mainEntityOfPage: `${CLINIC.url}${path}`,
+    author: {
+      "@type": "Organization",
+      name: CLINIC.name,
+      url: CLINIC.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: CLINIC.name,
+      url: CLINIC.url,
+      logo: {
+        "@type": "ImageObject",
+        url: `${CLINIC.url}/logo.webp`,
+      },
+    },
+  };
+
+  return <JsonLdScript data={data} />;
+}
+
 export function BreadcrumbJsonLd({
   items,
 }: {

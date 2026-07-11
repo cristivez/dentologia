@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { CLINIC } from "@/lib/constants";
 import { servicePages } from "@/data/servicePages";
 import { serviceCategories } from "@/data/services";
+import { blogPosts } from "@/data/blogPosts";
 
 /**
  * Only Romanian routes are listed. The `/en` tree is a stub with Romanian body
@@ -18,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/echipa", priority: 0.8 },
     { path: "/contact", priority: 0.8 },
     { path: "/intrebari", priority: 0.7 },
+    { path: "/blog", priority: 0.7 },
     { path: "/recenzii", priority: 0.6 },
     { path: "/confidentialitate", priority: 0.3 },
   ];
@@ -32,12 +34,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...priceCategoryRoutes].map(
-    ({ path, priority }) => ({
-      url: `${CLINIC.url}${path}`,
-      lastModified,
-      changeFrequency: path === "/preturi" ? "weekly" : "monthly",
-      priority,
-    }),
-  );
+  const blogRoutes = blogPosts.map((post) => ({
+    path: `/blog/${post.slug}`,
+    priority: 0.6,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...serviceRoutes,
+    ...priceCategoryRoutes,
+    ...blogRoutes,
+  ].map(({ path, priority }) => ({
+    url: `${CLINIC.url}${path}`,
+    lastModified,
+    changeFrequency: path === "/preturi" ? "weekly" : "monthly",
+    priority,
+  }));
 }
