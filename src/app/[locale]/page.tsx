@@ -79,7 +79,7 @@ export default function HomePage({
             alt={`${CLINIC.name} - Logo`}
             width={120}
             height={120}
-            className="logo-glow mb-6 rounded-2xl"
+            className="logo-glow mb-6 rounded-full"
             priority
           />
         </div>

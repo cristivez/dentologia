@@ -80,7 +80,7 @@ export function Header() {
             alt={`${CLINIC.name} logo`}
             width={36}
             height={36}
-            className="logo-glow rounded-lg"
+            className="logo-glow rounded-full"
             priority
           />
           <span className="text-lg font-bold text-foreground hidden sm:inline">
