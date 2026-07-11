@@ -32,6 +32,25 @@ test.describe("Above-the-fold content renders without JavaScript", () => {
       "/servicii/urgente-stomatologice",
       "Urgențe stomatologice în Câmpulung Muscel",
     ],
+    [
+      "/servicii/coroana-zirconiu",
+      "Coroană dentară din zirconiu în Câmpulung Muscel",
+    ],
+    ["/servicii/fatete-dentare", "Fațete dentare în Câmpulung Muscel"],
+    [
+      "/servicii/extractie-dentara",
+      "Extracție dentară și măsea de minte în Câmpulung Muscel",
+    ],
+    [
+      "/servicii/tratament-canal",
+      "Tratament de canal (endodonție) în Câmpulung Muscel",
+    ],
+    ["/servicii/proteza-dentara", "Proteză dentară în Câmpulung Muscel"],
+    [
+      "/servicii/plomba-dentara",
+      "Plombă dentară (obturație) în Câmpulung Muscel",
+    ],
+    ["/servicii/dentist-copii", "Dentist pentru copii în Câmpulung Muscel"],
   ] as const;
 
   test("homepage h1 is visible with JS off", async ({ page }) => {

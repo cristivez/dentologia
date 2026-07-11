@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { servicePages, SERVICE_PAGE_SLUGS } from "../src/data/servicePages";
+
+// Three themed intro cards on /servicii, above the per-service detail grid.
+const THEMED_CARDS = 3;
 
 test.describe("Phase 3 — Homepage", () => {
   test("homepage h1 targets the local search term", async ({ page }) => {
@@ -91,14 +95,21 @@ test.describe("Phase 3 — Services Page", () => {
     await expect(
       page.getByRole("heading", { level: 2, name: "Servicii detaliate" }),
     ).toBeVisible();
-    // Three themed cards, each headed by an h2 inside a card.
-    await expect(page.locator("main a[href^='/servicii/']")).toHaveCount(8);
+    // Three themed cards plus one detail card per dedicated service page.
+    await expect(page.locator("main a[href^='/servicii/']")).toHaveCount(
+      THEMED_CARDS + servicePages.length,
+    );
   });
 
   test("services page lists every dedicated service page", async ({ page }) => {
     await page.goto("/servicii");
-    const detailCards = page.locator("main h3");
-    await expect(detailCards).toHaveCount(5);
+    await expect(page.locator("main h3")).toHaveCount(servicePages.length);
+    // Every slug is actually linked, so adding a page can't silently drop it.
+    for (const slug of SERVICE_PAGE_SLUGS) {
+      await expect(
+        page.locator(`main a[href="/servicii/${slug}"]`).first(),
+      ).toBeVisible();
+    }
   });
 
   test("each card has a feature list", async ({ page }) => {
@@ -152,7 +163,7 @@ test.describe("Phase 3 — Mobile", () => {
     await page.goto("/servicii");
     const cards = page.locator("main h3");
     const count = await cards.count();
-    expect(count).toBe(5);
+    expect(count).toBe(servicePages.length);
 
     // All cards should be stacked vertically — check first 2 cards have different Y positions
     const card1 = page.locator("main h3").first();
