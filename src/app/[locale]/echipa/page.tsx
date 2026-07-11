@@ -2,7 +2,7 @@ import { use, type CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
-import { Phone, MessageCircle } from "lucide-react";
+import { Phone } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
@@ -87,16 +87,6 @@ export default function TeamPage({
             <Button href={`tel:${CLINIC.phone}`} size="lg">
               <Phone size={20} aria-hidden="true" />
               Programează o consultație
-            </Button>
-            <Button
-              href={CLINIC.whatsapp}
-              variant="whatsapp"
-              size="lg"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle size={20} aria-hidden="true" />
-              WhatsApp
             </Button>
           </div>
         </AnimatedSection>

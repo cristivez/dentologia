@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Phone, MessageCircle, MapPin, Clock, Star } from "lucide-react";
+import { Phone, MapPin, Clock, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { AnimatedGroup, AnimatedItem } from "@/components/shared/AnimatedGroup";
 import { CLINIC, SCHEDULE, GOOGLE_RATING, formatHours } from "@/lib/constants";
@@ -45,38 +45,6 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-surface">
       <AnimatedGroup>
-        {/* Call-to-action band — booking is the clinic's whole goal */}
-        <AnimatedItem className="border-b border-border">
-          <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-4 py-8 text-center sm:px-6 md:flex-row md:justify-between md:py-10 md:text-left">
-            <div>
-              <p className="text-xl font-bold text-foreground sm:text-2xl">
-                Programează-te astăzi
-              </p>
-              <p className="mt-1 text-sm text-muted">
-                Îți răspundem rapid la telefon sau pe WhatsApp.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <a
-                href={`tel:${CLINIC.phone}`}
-                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg transition-[transform,opacity] duration-200 active:scale-95 [@media(hover:hover)]:hover:opacity-90"
-              >
-                <Phone size={18} aria-hidden="true" />
-                {CLINIC.phoneDisplay}
-              </a>
-              <a
-                href={CLINIC.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-whatsapp px-6 py-3 font-semibold text-whatsapp-foreground shadow-lg transition-[transform,opacity] duration-200 active:scale-95 [@media(hover:hover)]:hover:opacity-90"
-              >
-                <MessageCircle size={18} aria-hidden="true" />
-                WhatsApp
-              </a>
-            </div>
-          </div>
-        </AnimatedItem>
-
         {/* Main footer */}
         <AnimatedItem className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.5fr_1fr_1.3fr] md:gap-12 md:py-14">
           {/* Brand + rating + social */}

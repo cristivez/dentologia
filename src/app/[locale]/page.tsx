@@ -20,7 +20,6 @@ import {
   Smile,
   Star,
   Phone,
-  MessageCircle,
   MapPin,
   Clock,
   ArrowRight,
@@ -370,31 +369,6 @@ export default function HomePage({
               title={th("contact_title")}
               subtitle={th("contact_subtitle")}
             />
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.1}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-              <Button
-                href={`tel:${CLINIC.phone}`}
-                variant="primary"
-                size="lg"
-                aria-label="Sună acum"
-              >
-                <Phone size={20} aria-hidden="true" />
-                {th("call_now")}
-              </Button>
-              <Button
-                href={CLINIC.whatsapp}
-                variant="whatsapp"
-                size="lg"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Scrie pe WhatsApp"
-              >
-                <MessageCircle size={20} aria-hidden="true" />
-                WhatsApp
-              </Button>
-            </div>
           </AnimatedSection>
 
           <AnimatedGroup className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto">

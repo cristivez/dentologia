@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { Phone, MessageCircle, ArrowRight, ArrowLeft } from "lucide-react";
+import { Phone, ArrowRight, ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
@@ -152,16 +152,6 @@ export default async function PriceCategoryPage({
           <Button href={`tel:${CLINIC.phone}`} size="lg">
             <Phone size={20} aria-hidden="true" />
             Sună acum
-          </Button>
-          <Button
-            href={CLINIC.whatsapp}
-            variant="whatsapp"
-            size="lg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <MessageCircle size={20} aria-hidden="true" />
-            WhatsApp
           </Button>
         </div>
 
