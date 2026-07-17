@@ -53,23 +53,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      # `no-js` was previously skipped along with `mobile`, so it ran nowhere.
-      # It is the suite that asserts what the server paints before any JS runs
-      # — the exact regression class as the loading.tsx incident — and it is
-      # chromium, so nothing stopped it running here. Now armed.
-      #
-      # `mobile` is still not armed, deliberately. It is WebKit
-      # (devices["iPhone 14"]) and the WebKit binary cannot be installed on the
-      # maintainer's machine — the archive downloads, then extraction stalls at
-      # ~15MB leaving only libwebrtc.dylib — so those 76 tests have never once
-      # executed and cannot be verified locally before being made deploy-
-      # blocking. Enabling them here would gate production on a suite nobody
-      # has ever seen pass. The coverage gap is narrower than it looks: the
-      # `viewport: 375x812` blocks in pages/prices-faq/reviews-contact run
-      # under chromium, so mobile *layout* is covered and only the WebKit
-      # *engine* is not. Add `webkit` here once a green local run exists.
-      - run: npm test -- --project=chromium --project=no-js
+      # All three engines. chromium (desktop) + webkit (the `mobile` project,
+      # devices["iPhone 14"]) + no-js (chromium, prerendered HTML with JS off —
+      # the regression class of the loading.tsx incident). On a mobile-first
+      # clinic site the mobile engine belongs in the gate. webkit installs
+      # cleanly here (Linux, Node 22); the extraction hang that blocks a plain
+      # `playwright install webkit` is a local Node-26 issue, not a CI one.
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm test
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
