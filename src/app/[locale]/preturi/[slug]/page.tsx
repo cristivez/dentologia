@@ -8,10 +8,8 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PriceTable } from "@/components/shared/PriceTable";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import {
-  BreadcrumbJsonLd,
-  OfferCatalogJsonLd,
-} from "@/components/shared/JsonLd";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { OfferCatalogJsonLd } from "@/components/shared/JsonLd";
 import { generatePageMetadata } from "@/lib/metadata";
 import { CLINIC } from "@/lib/constants";
 import { routing } from "@/i18n/routing";
@@ -82,16 +80,6 @@ export default async function PriceCategoryPage({
 
   return (
     <>
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Acasă", url: CLINIC.url },
-          { name: "Prețuri", url: `${CLINIC.url}/preturi` },
-          {
-            name: category.label,
-            url: `${CLINIC.url}/preturi/${category.slug}`,
-          },
-        ]}
-      />
       <OfferCatalogJsonLd
         name={category.h1}
         description={category.metaDescription}
@@ -101,35 +89,13 @@ export default async function PriceCategoryPage({
 
       <Container as="section" className="py-20 pt-28">
         {/* Above the fold: CSS transform entrance only, never opacity. */}
-        <nav
-          aria-label="Firimituri"
-          className="rise mb-6 text-sm text-muted"
-          style={{ "--rise-delay": "0ms" } as CSSProperties}
-        >
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link
-                href="/"
-                className="transition-colors [@media(hover:hover)]:hover:text-primary"
-              >
-                Acasă
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link
-                href="/preturi"
-                className="transition-colors [@media(hover:hover)]:hover:text-primary"
-              >
-                Prețuri
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li className="text-foreground" aria-current="page">
-              {category.label}
-            </li>
-          </ol>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", href: "/" },
+            { name: "Prețuri", href: "/preturi" },
+            { name: category.label, href: `/preturi/${category.slug}` },
+          ]}
+        />
 
         <h1
           className="rise mb-6 text-3xl font-bold tracking-tight md:text-4xl"

@@ -13,6 +13,7 @@ import { AnimatedGroup, AnimatedItem } from "@/components/shared/AnimatedGroup";
 import { Parallax } from "@/components/shared/Parallax";
 import { GoogleRating } from "@/components/shared/GoogleRating";
 import { PriceTabs } from "@/components/shared/PriceTabs";
+import { FaqItem } from "@/components/shared/FaqItem";
 import { faqItems } from "@/data/faq";
 import {
   ChevronDown,
@@ -333,20 +334,7 @@ export default function HomePage({
           <AnimatedGroup className="max-w-3xl mx-auto space-y-3">
             {topFaqs.map((item) => (
               <AnimatedItem key={item.question}>
-                <details className="group rounded-xl border border-border bg-surface overflow-hidden">
-                  <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-foreground font-medium text-sm min-h-[44px] list-none [&::-webkit-details-marker]:hidden">
-                    <span>{item.question}</span>
-                    <span
-                      className="shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
-                      aria-hidden="true"
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <div className="px-5 pb-4 text-sm text-muted leading-relaxed">
-                    <p>{item.answer}</p>
-                  </div>
-                </details>
+                <FaqItem question={item.question} answer={item.answer} />
               </AnimatedItem>
             ))}
           </AnimatedGroup>

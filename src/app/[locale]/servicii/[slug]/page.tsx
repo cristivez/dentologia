@@ -7,11 +7,9 @@ import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import {
-  BreadcrumbJsonLd,
-  FAQPageJsonLd,
-  ServiceJsonLd,
-} from "@/components/shared/JsonLd";
+import { FaqItem } from "@/components/shared/FaqItem";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { FAQPageJsonLd, ServiceJsonLd } from "@/components/shared/JsonLd";
 import { generatePageMetadata } from "@/lib/metadata";
 import { CLINIC } from "@/lib/constants";
 import { routing } from "@/i18n/routing";
@@ -75,13 +73,6 @@ export default async function ServiceDetailPage({
 
   return (
     <>
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Acasă", url: CLINIC.url },
-          { name: "Servicii", url: `${CLINIC.url}/servicii` },
-          { name: page.h1, url: `${CLINIC.url}/servicii/${page.slug}` },
-        ]}
-      />
       <ServiceJsonLd
         name={page.h1}
         description={page.metaDescription}
@@ -94,35 +85,13 @@ export default async function ServiceDetailPage({
         {/* Above the fold: CSS transform entrance only. This block holds the
             <h1> these pages exist to rank, so it must never be opacity-gated
             on framer-motion hydrating. */}
-        <nav
-          aria-label="Firimituri"
-          className="rise mb-6 text-sm text-muted"
-          style={{ "--rise-delay": "0ms" } as CSSProperties}
-        >
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link
-                href="/"
-                className="[@media(hover:hover)]:hover:text-primary transition-colors"
-              >
-                Acasă
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link
-                href="/servicii"
-                className="[@media(hover:hover)]:hover:text-primary transition-colors"
-              >
-                Servicii
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li className="text-foreground" aria-current="page">
-              {page.h1}
-            </li>
-          </ol>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", href: "/" },
+            { name: "Servicii", href: "/servicii" },
+            { name: page.h1, href: `/servicii/${page.slug}` },
+          ]}
+        />
 
         <h1
           className="rise text-3xl md:text-5xl font-bold tracking-tight mb-6"
@@ -163,23 +132,11 @@ export default async function ServiceDetailPage({
                 <h2 className="text-2xl font-bold mb-6">Întrebări frecvente</h2>
                 <div className="space-y-3">
                   {page.faq.map((item) => (
-                    <details
+                    <FaqItem
                       key={item.question}
-                      className="group rounded-xl border border-border bg-surface overflow-hidden"
-                    >
-                      <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-foreground font-medium text-sm min-h-[44px] list-none [&::-webkit-details-marker]:hidden">
-                        <span>{item.question}</span>
-                        <span
-                          className="shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
-                          aria-hidden="true"
-                        >
-                          +
-                        </span>
-                      </summary>
-                      <div className="px-5 pb-4 text-sm text-muted leading-relaxed">
-                        <p>{item.answer}</p>
-                      </div>
-                    </details>
+                      question={item.question}
+                      answer={item.answer}
+                    />
                   ))}
                 </div>
               </section>
