@@ -82,7 +82,7 @@ jobs:
       # Must precede the build: actions/cache restores at the step's position,
       # so sitting after `npm run build` it never once warmed the build it
       # exists to speed up. It saves on job success, hence still before.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: .next/cache
           key: nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
