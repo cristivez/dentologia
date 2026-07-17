@@ -10,15 +10,17 @@ import Script from "next/script";
  * `NEXT_PUBLIC_CF_BEACON_TOKEN` env var still overrides it (`||`, so an empty
  * value falls back rather than blanking the token).
  *
- * This renders in every build, dev included — a build-time dev gate would rely
- * on `process.env.NODE_ENV`, which this Turbopack/OpenNext dev server inlines
- * as "production", and a runtime host check would force dynamic rendering and
- * break the site's full static generation. The odd localhost hit from a dev
- * session is negligible against real traffic. Value: Cloudflare dashboard →
- * Web Analytics → dentologia.ro → the token in the JS snippet.
+ * Gated to production builds: `next dev` renders no beacon at all, so local
+ * sessions never pollute the real visitor stats. (`next build` sets NODE_ENV
+ * to "production"; `next dev` sets "development" — this is a build-time
+ * constant, so the gate costs nothing at runtime and keeps the site fully
+ * static.) Value: Cloudflare dashboard → Web Analytics → dentologia.ro.
  */
 const CF_BEACON_TOKEN =
-  process.env.NEXT_PUBLIC_CF_BEACON_TOKEN || "00139fff55144a8e8b1fa5b95963c538";
+  process.env.NEXT_PUBLIC_CF_BEACON_TOKEN ||
+  (process.env.NODE_ENV === "production"
+    ? "00139fff55144a8e8b1fa5b95963c538"
+    : undefined);
 
 /**
  * Cloudflare Web Analytics — cookieless, privacy-first traffic stats.
