@@ -69,6 +69,10 @@ export function Header() {
   useEffect(() => {
     const panel = panelRef.current;
     if (!menuOpen || !panel) return;
+    // Captured at setup so the cleanup restores focus to the same node. The
+    // hamburger is always rendered, so this equals its value at close time —
+    // but capturing keeps the ref out of the cleanup (react-hooks/exhaustive).
+    const trigger = hamburgerRef.current;
 
     const focusable = () =>
       Array.from(
@@ -112,7 +116,7 @@ export function Header() {
       // Return focus to the trigger. Restored via ref, not a captured
       // activeElement — WebKit never focuses the button on click, so the
       // active element at open time was <body>, not the hamburger.
-      hamburgerRef.current?.focus();
+      trigger?.focus();
     };
   }, [menuOpen]);
 
