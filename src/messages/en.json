@@ -3,14 +3,6 @@
     "title": "Dental Clinic Câmpulung Muscel - Implants, Braces | Dentologia",
     "description": "Dentist in Câmpulung Muscel. Dental implants, braces, whitening, scaling, dental emergencies. Transparent prices. Appointments: 0750 486 564."
   },
-  "Nav": {
-    "home": "Home",
-    "services": "Services",
-    "prices": "Prices",
-    "reviews": "Reviews",
-    "faq": "FAQ",
-    "contact": "Contact"
-  },
   "Hero": {
     "brand": "Dentologia",
     "title": "Dental clinic in Câmpulung Muscel",
@@ -48,13 +40,6 @@
     "address": "Address",
     "schedule": "Schedule",
     "all_contact": "All contact details"
-  },
-  "Reviews": {
-    "rating_label": "{count} reviews on Google",
-    "see_on_google": "See all reviews on Google →",
-    "leave_review": "Leave a review",
-    "empty_title": "Our reviews live on Google",
-    "empty_body": "Patients have rated us {rating} out of 5 across {count} reviews on Google Maps. You can read them in full, straight from the source."
   },
   "Services": {
     "heading": "Our Services",

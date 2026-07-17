@@ -3,14 +3,6 @@
     "title": "Clinică Stomatologică Câmpulung Muscel - Implant, Aparat Dentar | Dentologia",
     "description": "Dentist în Câmpulung Muscel. Implant dentar, aparat dentar, albire, detartraj, urgențe stomatologice. Prețuri transparente. Programări: 0750 486 564."
   },
-  "Nav": {
-    "home": "Acasă",
-    "services": "Servicii",
-    "prices": "Prețuri",
-    "reviews": "Recenzii",
-    "faq": "Întrebări",
-    "contact": "Contact"
-  },
   "Hero": {
     "brand": "Dentologia",
     "title": "Clinică stomatologică în Câmpulung Muscel",
@@ -48,13 +40,6 @@
     "address": "Adresă",
     "schedule": "Program",
     "all_contact": "Toate detaliile de contact"
-  },
-  "Reviews": {
-    "rating_label": "{count} recenzii pe Google",
-    "see_on_google": "Vezi toate recenziile pe Google →",
-    "leave_review": "Lasă o recenzie",
-    "empty_title": "Recenziile noastre sunt pe Google",
-    "empty_body": "Pacienții ne-au acordat {rating} din 5 stele în {count} recenzii pe Google Maps. Le puteți citi integral, direct la sursă."
   },
   "Services": {
     "heading": "Serviciile noastre",
