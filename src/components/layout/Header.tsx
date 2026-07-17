@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
@@ -26,6 +26,8 @@ export function Header() {
   const [lastPathname, setLastPathname] = useState(pathname);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const panelRef = useRef<HTMLElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   // Close the mobile menu on route change, including browser back/forward.
   if (pathname !== lastPathname) {
@@ -60,6 +62,59 @@ export function Header() {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [menuOpen, closeMenu]);
+
+  // Modal focus management: the panel is a scroll-locked overlay, so focus has
+  // to move into it, stay trapped while it is open, and return to the trigger
+  // on close — otherwise a keyboard user tabs onto the page hidden behind it.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!menuOpen || !panel) return;
+
+    const focusable = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+    // Move focus to the dialog container itself (it carries tabindex=-1), not a
+    // child control. WebKit ignores a programmatic .focus() on a button/link
+    // raised outside the click's own gesture, but honours it on the container —
+    // and focusing the container is the WAI-ARIA dialog pattern anyway.
+    panel.focus();
+
+    // Document-level so it still fires if focus has already slipped out of the
+    // panel — WebKit, unlike Chromium, tabs straight off the tabindex=-1
+    // container instead of into its first child, so the trap has to pull focus
+    // back rather than only wrap at the first/last element.
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+
+      if (!active || active === panel || !panel.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      // Return focus to the trigger. Restored via ref, not a captured
+      // activeElement — WebKit never focuses the button on click, so the
+      // active element at open time was <body>, not the hamburger.
+      hamburgerRef.current?.focus();
+    };
+  }, [menuOpen]);
 
   const isHidden = scrollDirection === "down" && !isAtTop && !menuOpen;
 
@@ -110,10 +165,12 @@ export function Header() {
 
         {/* Mobile hamburger */}
         <button
+          ref={hamburgerRef}
           className="flex md:hidden min-h-[44px] min-w-[44px] items-center justify-center rounded-lg"
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-label={menuOpen ? "Închide meniul" : "Deschide meniul"}
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           {menuOpen ? (
             <X size={24} aria-hidden="true" />
@@ -132,6 +189,11 @@ export function Header() {
             aria-hidden="true"
           />
           <nav
+            ref={panelRef}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            tabIndex={-1}
             className="fixed top-0 right-0 bottom-0 w-72 bg-surface z-50 flex flex-col p-6 pt-20 shadow-2xl md:hidden"
             aria-label="Meniu mobil"
           >

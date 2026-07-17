@@ -162,4 +162,38 @@ test.describe("Phase 2 — Mobile Layout", () => {
     const mobileNav = page.locator('nav[aria-label="Meniu mobil"]');
     await expect(mobileNav).toContainText("0750 486 564");
   });
+
+  test("mobile menu is a proper modal: moves focus in, traps it, restores it", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    const hamburger = page.locator('button[aria-label="Deschide meniul"]');
+    await hamburger.click();
+
+    const dialog = page.locator("#mobile-menu");
+    await expect(dialog).toHaveAttribute("role", "dialog");
+    await expect(dialog).toHaveAttribute("aria-modal", "true");
+
+    // activeElement is inside the dialog — robust across engines whether focus
+    // landed on the container or a child. WebKit and Chromium disagree on which.
+    const focusInsideDialog = () =>
+      page.evaluate(() => !!document.activeElement?.closest("#mobile-menu"));
+
+    // Focus moved INTO the panel on open (not left on the page behind it).
+    await expect.poll(focusInsideDialog).toBe(true);
+
+    // Tab past every focusable (+1 to force a wrap) never escapes the overlay.
+    const focusableCount = await dialog
+      .locator(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      )
+      .count();
+    for (let i = 0; i <= focusableCount; i++) await page.keyboard.press("Tab");
+    expect(await focusInsideDialog()).toBe(true);
+
+    // Escape closes it and returns focus to the trigger.
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+    await expect(hamburger).toBeFocused();
+  });
 });
