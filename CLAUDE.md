@@ -49,7 +49,11 @@ Dental clinic website for Dentologia in Câmpulung Muscel, Romania. Multi-page N
 - **Font**: Montserrat 400/600/700 via next/font/google
 - **Testing**: Vitest (unit) + Playwright + @axe-core/playwright (E2E + a11y)
 - **Deployment**: Cloudflare Workers via @opennextjs/cloudflare
-- **CI/CD**: GitHub Actions
+- **CI/CD**: local only, by choice — the GitHub Actions workflow exists but is
+  disabled (`disabled_manually`; re-enable with `gh workflow enable 310296935`).
+  There are no Cloudflare secrets in GitHub. Verify with the full local gate
+  and deploy with `npm run deploy` (wrangler is OAuth'd locally; this hits the
+  LIVE site)
 
 ## Project Structure
 
@@ -128,6 +132,10 @@ When working on this project, automatically use the appropriate slash command ba
 - Phone: 0750 486 564 | WhatsApp: wa.me/40750486564
 - Address: Strada General Iosif Teodorescu 2, Câmpulung 115100
 - Every change must work on both mobile and desktop
-- Run `npm run test:unit` and `npm test -- --project=chromium` to verify changes
+- Verify locally before any deploy — there is no CI safety net. Full gate:
+  `npx tsc --noEmit`, `npx eslint .`, `npm run test:unit`, and `npm test`
+  (all three Playwright projects; the `mobile` project is WebKit). If other
+  local dev servers squat ports 3001/3002, temporarily remap the ports in
+  playwright.config.ts (command + url + baseURL) and restore it after
 - Server Components by default; only use `"use client"` when interactivity is required
 - Prices source of truth: `src/data/services.ts` (extracted from `Prices.md`)
