@@ -51,9 +51,14 @@ Dental clinic website for Dentologia in Câmpulung Muscel, Romania. Multi-page N
 - **Deployment**: Cloudflare Workers via @opennextjs/cloudflare
 - **CI/CD**: local only, by choice — the GitHub Actions workflow exists but is
   disabled (`disabled_manually`; re-enable with `gh workflow enable 310296935`).
-  There are no Cloudflare secrets in GitHub. Verify with the full local gate
-  and deploy with `npm run deploy` (wrangler is OAuth'd locally; this hits the
-  LIVE site)
+  There are no Cloudflare secrets in GitHub. Dependabot is switched off too —
+  dependency updates are checked and applied locally (`npm outdated`). Verify
+  with the full local gate and deploy with `npm run deploy` (wrangler is
+  OAuth'd locally; this hits the LIVE site). Every `npm run deploy` first runs
+  the Lighthouse gate (`scripts/lighthouse-gate.mjs`, npm's `predeploy` hook):
+  it builds, audits the homepage, and blocks the deploy if any category falls
+  below its floor. `SKIP_LIGHTHOUSE=1` bypasses it only when the drop is
+  understood and intended
 
 ## Project Structure
 

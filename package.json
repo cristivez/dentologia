@@ -12,7 +12,8 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "preview": "opennextjs-cloudflare build && wrangler dev",
-    "deploy": "opennextjs-cloudflare build && wrangler deploy",
+    "predeploy": "node scripts/lighthouse-gate.mjs",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "prepare": "husky"
   },
   "lint-staged": {
