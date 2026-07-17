@@ -27,6 +27,7 @@ export default function FaqPage() {
       <Container as="section" className="py-20 pt-28">
         <div className="rise">
           <SectionHeading
+            as="h1"
             title="Întrebări frecvente"
             subtitle="Răspunsuri la cele mai frecvente întrebări despre serviciile noastre"
           />

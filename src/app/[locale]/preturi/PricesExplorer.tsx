@@ -39,7 +39,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
   return (
     <>
       {text.slice(0, index)}
-      <mark className="bg-primary/30 text-foreground rounded px-0.5">
+      <mark className="bg-primary text-background rounded px-0.5">
         {text.slice(index, index + query.length)}
       </mark>
       {text.slice(index + query.length)}
@@ -253,7 +253,7 @@ export function PricesExplorer() {
             type="button"
             onClick={clearSearch}
             aria-label="Șterge căutarea"
-            className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-muted [@media(hover:hover)]:hover:text-foreground"
+            className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-muted [@media(hover:hover)]:hover:text-foreground"
           >
             <X size={16} aria-hidden="true" />
           </button>

@@ -98,6 +98,7 @@ export default function ReviewsPage() {
     <Container as="section" className="py-20 pt-28">
       <div className="rise">
         <SectionHeading
+          as="h1"
           title="Ce spun pacienții noștri"
           subtitle="Recenzii verificate pe Google Maps"
         />

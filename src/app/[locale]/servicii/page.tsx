@@ -58,7 +58,11 @@ export default function ServicesPage({
       />
       <Container as="section" className="py-20 pt-28">
         <div className="rise">
-          <SectionHeading title={t("heading")} subtitle={t("subtitle")} />
+          <SectionHeading
+            as="h1"
+            title={t("heading")}
+            subtitle={t("subtitle")}
+          />
         </div>
 
         <AnimatedGroup className="grid gap-6 md:grid-cols-3">

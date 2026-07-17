@@ -86,9 +86,9 @@ test.describe("Phase 3 — Homepage", () => {
 test.describe("Phase 3 — Services Page", () => {
   test("services page renders heading", async ({ page }) => {
     await page.goto("/servicii");
-    await expect(page.locator("h2").first()).toContainText(
-      "Serviciile noastre",
-    );
+    // The page title is the <h1> (it used to render as an <h2>, which left the
+    // page with no h1 at all — see the per-route h1 guard in routes.spec.ts).
+    await expect(page.locator("h1")).toContainText("Serviciile noastre");
   });
 
   test("services page has both the themed and the detailed sections", async ({

@@ -15,6 +15,7 @@ export default function PrivacyPage() {
   return (
     <Container as="section" className="py-20 pt-28">
       <SectionHeading
+        as="h1"
         title="Politica de confidențialitate"
         subtitle="Informații privind prelucrarea datelor cu caracter personal"
       />

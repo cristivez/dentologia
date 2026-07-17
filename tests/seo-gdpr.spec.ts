@@ -49,7 +49,8 @@ test.describe("Phase 6 — GDPR", () => {
 
   test("privacy page renders", async ({ page }) => {
     await page.goto("/confidentialitate", { waitUntil: "networkidle" });
-    await expect(page.locator("h2")).toContainText("confidențialitate");
+    // Page title is the <h1> now (was an <h2>, leaving the page h1-less).
+    await expect(page.locator("h1")).toContainText("confidențialitate");
   });
 
   test("privacy page passes accessibility", async ({ page }) => {

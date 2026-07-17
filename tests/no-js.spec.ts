@@ -99,7 +99,7 @@ test.describe("Above-the-fold content renders without JavaScript", () => {
   test("services page heading is visible with JS off", async ({ page }) => {
     await page.goto("/servicii");
     await expect(
-      page.getByRole("heading", { level: 2, name: "Serviciile noastre" }),
+      page.getByRole("heading", { level: 1, name: "Serviciile noastre" }),
     ).toBeVisible();
   });
 

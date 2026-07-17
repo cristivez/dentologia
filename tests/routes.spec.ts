@@ -55,4 +55,28 @@ test.describe("Phase 1 — Foundation", () => {
     );
     expect(critical).toHaveLength(0);
   });
+
+  // Five top-level pages once rendered their title through SectionHeading's
+  // default <h2>, leaving the page with no <h1> — an SEO and screen-reader
+  // defect that axe's default ruleset does not flag (page-has-heading-one is
+  // best-practice, off by default). No per-page test covered them, so it
+  // shipped silent. This guards every content route at once.
+  const CONTENT_ROUTES = [
+    "/",
+    "/servicii",
+    "/preturi",
+    "/echipa",
+    "/recenzii",
+    "/intrebari",
+    "/blog",
+    "/contact",
+    "/confidentialitate",
+  ];
+
+  for (const route of CONTENT_ROUTES) {
+    test(`${route} has exactly one <h1>`, async ({ page }) => {
+      await page.goto(route);
+      await expect(page.locator("h1")).toHaveCount(1);
+    });
+  }
 });

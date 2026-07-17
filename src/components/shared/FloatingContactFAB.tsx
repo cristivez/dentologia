@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { AnimatePresence, m } from "framer-motion";
+import { AnimatePresence, m, MotionConfig } from "framer-motion";
 import { Phone, MessageCircle, X } from "lucide-react";
 import { CLINIC } from "@/lib/constants";
 
@@ -39,38 +39,44 @@ export function FloatingContactFAB() {
         />
       )}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-        <AnimatePresence>
-          {isOpen && (
-            <>
-              <m.a
-                href={`tel:${CLINIC.phone}`}
-                className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground font-semibold shadow-lg active:scale-95 transition-transform"
-                initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                transition={{ duration: 0.2, delay: 0.1 }}
-                aria-label="Sună acum"
-              >
-                <Phone size={18} aria-hidden="true" />
-                <span className="text-sm">Sună</span>
-              </m.a>
-              <m.a
-                href={CLINIC.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full bg-whatsapp px-4 py-2 text-white font-semibold shadow-lg active:scale-95 transition-transform"
-                initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                transition={{ duration: 0.2, delay: 0.05 }}
-                aria-label="WhatsApp"
-              >
-                <MessageCircle size={18} aria-hidden="true" />
-                <span className="text-sm">WhatsApp</span>
-              </m.a>
-            </>
-          )}
-        </AnimatePresence>
+        {/* The scroll-reveal components gate motion with usePrefersReducedMotion,
+            but Framer does not auto-reduce on its own — this was the one
+            animation ignoring the preference. reducedMotion="user" keeps the
+            opacity fade and drops the scale/slide for users who ask for it. */}
+        <MotionConfig reducedMotion="user">
+          <AnimatePresence>
+            {isOpen && (
+              <>
+                <m.a
+                  href={`tel:${CLINIC.phone}`}
+                  className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground font-semibold shadow-lg active:scale-95 transition-transform"
+                  initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                  transition={{ duration: 0.2, delay: 0.1 }}
+                  aria-label="Sună acum"
+                >
+                  <Phone size={18} aria-hidden="true" />
+                  <span className="text-sm">Sună</span>
+                </m.a>
+                <m.a
+                  href={CLINIC.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full bg-whatsapp px-4 py-2 text-whatsapp-foreground font-semibold shadow-lg active:scale-95 transition-transform"
+                  initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                  transition={{ duration: 0.2, delay: 0.05 }}
+                  aria-label="WhatsApp"
+                >
+                  <MessageCircle size={18} aria-hidden="true" />
+                  <span className="text-sm">WhatsApp</span>
+                </m.a>
+              </>
+            )}
+          </AnimatePresence>
+        </MotionConfig>
 
         <button
           onClick={() => setIsOpen((prev) => !prev)}

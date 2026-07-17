@@ -21,6 +21,7 @@ export default function ContactPage() {
     <Container as="section" className="py-20 pt-28">
       <div className="rise">
         <SectionHeading
+          as="h1"
           title="Contact"
           subtitle="Sunați sau scrieți-ne pentru programări"
         />
@@ -61,7 +62,7 @@ export default function ContactPage() {
             size="lg"
             aria-label="Sună acum"
           >
-            <Phone size={20} />
+            <Phone size={20} aria-hidden="true" />
             Sună acum
           </Button>
           <Button
@@ -72,7 +73,7 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             aria-label="Scrie pe WhatsApp"
           >
-            <MessageCircle size={20} />
+            <MessageCircle size={20} aria-hidden="true" />
             WhatsApp
           </Button>
         </div>
@@ -84,7 +85,11 @@ export default function ContactPage() {
           {/* Address */}
           <div className="rounded-2xl bg-surface border border-border p-6">
             <div className="flex items-start gap-3 mb-3">
-              <MapPin size={20} className="text-primary shrink-0 mt-0.5" />
+              <MapPin
+                size={20}
+                aria-hidden="true"
+                className="text-primary shrink-0 mt-0.5"
+              />
               <h3 className="text-base font-semibold text-foreground">
                 Adresă
               </h3>
@@ -109,7 +114,11 @@ export default function ContactPage() {
           {/* Schedule */}
           <div className="rounded-2xl bg-surface border border-border p-6">
             <div className="flex items-start gap-3 mb-3">
-              <Clock size={20} className="text-primary shrink-0 mt-0.5" />
+              <Clock
+                size={20}
+                aria-hidden="true"
+                className="text-primary shrink-0 mt-0.5"
+              />
               <h3 className="text-base font-semibold text-foreground">
                 Program
               </h3>
@@ -133,7 +142,11 @@ export default function ContactPage() {
           {/* Phone & Email */}
           <div className="rounded-2xl bg-surface border border-border p-6">
             <div className="flex items-start gap-3 mb-3">
-              <Phone size={20} className="text-primary shrink-0 mt-0.5" />
+              <Phone
+                size={20}
+                aria-hidden="true"
+                className="text-primary shrink-0 mt-0.5"
+              />
               <h3 className="text-base font-semibold text-foreground">
                 Telefon
               </h3>
