@@ -104,11 +104,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # The Cloudflare Web Analytics token is a public value baked into
+      # CloudflareAnalytics.tsx, so no secret is needed here. Passing one from
+      # an unset secret used to override it with an empty string — which is
+      # why analytics silently shipped nothing.
       - run: npx opennextjs-cloudflare build
-        env:
-          # Public Cloudflare Web Analytics site token (safe to expose; it
-          # appears in the page HTML). Add it as a repo secret to enable stats.
-          NEXT_PUBLIC_CF_BEACON_TOKEN: ${{ secrets.NEXT_PUBLIC_CF_BEACON_TOKEN }}
       # opennextjs-cloudflare deploy, NOT bare wrangler deploy: it populates
       # the incremental cache first. Without it every prerendered dynamic
       # route (/servicii/[slug], /preturi/[slug], /blog/[slug]) 404s.
