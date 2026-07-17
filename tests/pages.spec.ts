@@ -55,8 +55,11 @@ test.describe("Phase 3 — Homepage", () => {
 
   test("homepage has CTA buttons", async ({ page }) => {
     await page.goto("/");
-    const servicesBtn = page.locator('a[href="/servicii"]').first();
-    const contactBtn = page.locator('a[href="/contact"]').first();
+    // Scope to <main>: an unscoped `.first()` matches the /servicii link in
+    // the header nav, which is `hidden md:flex` and so invisible on a phone.
+    // The hero CTAs live in the page body and must be visible at every width.
+    const servicesBtn = page.locator('main a[href="/servicii"]').first();
+    const contactBtn = page.locator('main a[href="/contact"]').first();
     await expect(servicesBtn).toBeVisible();
     await expect(contactBtn).toBeVisible();
   });

@@ -27,6 +27,16 @@ test.describe("Phase 2 — Layout", () => {
   });
 
   test("desktop nav has all navigation links", async ({ page }) => {
+    // The desktop nav is `hidden md:flex`, so below the md breakpoint it is
+    // deliberately replaced by the hamburger (covered by the Mobile Layout
+    // block). Skip rather than assert a hidden element — this test inherits
+    // the project viewport, and the `mobile` project runs at 390px.
+    const viewport = page.viewportSize();
+    test.skip(
+      !!viewport && viewport.width < 768,
+      "desktop nav is hidden below md; the mobile menu has its own tests",
+    );
+
     await page.goto("/");
     const nav = page.locator('nav[aria-label="Navigare principală"]');
     await expect(nav).toBeVisible();
