@@ -45,7 +45,17 @@ export type ServicePage = {
   priceNote?: string;
   faq: { question: string; answer: string }[];
   relatedSlugs: readonly ServicePageSlug[];
-  /** The price category this service belongs to, for the "see full prices" link. */
+  /**
+   * The price category this service belongs to, for the "see full prices" link.
+   *
+   * The `ServiceCategorySlug` type is what keeps this honest. The homepage and
+   * services page once linked to `/preturi?tab=implant` — a slug that never
+   * existed — and the price page looked it up, found nothing, and rendered no
+   * table at all. Typing the field means that typo is now a compile error, and
+   * `/preturi/[slug]` sets `dynamicParams = false` so an unknown slug 404s
+   * loudly instead of silently rendering an empty page. Keep it a slug, not a
+   * string.
+   */
   priceCategory: ServiceCategorySlug;
 };
 

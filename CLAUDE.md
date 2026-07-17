@@ -61,7 +61,7 @@ src/
 │   │   ├── page.tsx        # Homepage (Hero)
 │   │   ├── servicii/       # Services page (3 cards)
 │   │   ├── preturi/        # Prices page (7 tabs + search, client component)
-│   │   ├── recenzii/       # Reviews page (embla carousel, client component)
+│   │   ├── recenzii/       # Reviews page (server; ReviewCarousel is a client leaf, dormant while reviews.ts is empty)
 │   │   ├── intrebari/      # FAQ page (native details/summary)
 │   │   ├── contact/        # Contact page (CTA, schedule, map, social)
 │   │   ├── confidentialitate/ # Privacy/GDPR page
@@ -73,10 +73,10 @@ src/
 │   ├── robots.ts           # Robots.txt
 │   └── manifest.ts         # PWA manifest
 ├── components/
-│   ├── ui/                 # Primitives: Button, Card, Container, SectionHeading, Badge
+│   ├── ui/                 # Primitives: Button, Card, Container, SectionHeading
 │   ├── layout/             # Header, Footer
-│   └── shared/             # AnimatedSection, FloatingContactFAB, MotionProvider, CookieConsent, Analytics, JsonLd
-├── data/                   # Static data: services.ts, faq.ts, reviews.ts
+│   └── shared/             # AnimatedSection/Group, Parallax, FloatingContactFAB, MotionProvider, GoogleRating, PriceTable/Tabs, CloudflareAnalytics, JsonLd
+├── data/                   # Static data: services.ts, servicePages.ts, faq.ts, blogPosts.ts, team.ts, reviews.ts
 ├── hooks/                  # useScrollDirection, useIsMobile, usePrefersReducedMotion
 ├── i18n/                   # routing.ts, request.ts, navigation.ts
 ├── lib/                    # utils.ts (cn), constants.ts (CLINIC, SCHEDULE), metadata.ts

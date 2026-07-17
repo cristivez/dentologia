@@ -1,0 +1,8 @@
+# Source photographs, not site assets.
+#
+# public/photos/originals/ holds the full-resolution originals the served
+# .webp files were produced from. Nothing links them, but Workers uploads
+# everything under the assets directory, so they were being deployed and
+# were publicly fetchable at dentologia.ro/photos/originals/*.jpg — 2.2MB
+# of the largest files in the deploy, enumerable by anyone.
+photos/originals

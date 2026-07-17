@@ -34,16 +34,6 @@ export type ServiceCategory = {
   items: ServiceItem[];
 };
 
-/** Narrows an untrusted value (a route param) to a known category slug. */
-export function isServiceCategorySlug(
-  value: string | null | undefined,
-): value is ServiceCategorySlug {
-  return (
-    value != null &&
-    (SERVICE_CATEGORY_SLUGS as readonly string[]).includes(value)
-  );
-}
-
 export const serviceCategories: ServiceCategory[] = [
   {
     slug: "general",
@@ -274,11 +264,6 @@ export const totalServiceItems = serviceCategories.reduce(
   (sum, cat) => sum + cat.items.length,
   0,
 );
-
-/** Price rows for a category, looked up by slug. */
-export function itemsForCategory(slug: ServiceCategorySlug): ServiceItem[] {
-  return serviceCategories.find((cat) => cat.slug === slug)?.items ?? [];
-}
 
 export function getServiceCategory(slug: string): ServiceCategory | undefined {
   return serviceCategories.find((cat) => cat.slug === slug);

@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
   serviceCategories,
-  isServiceCategorySlug,
   SERVICE_CATEGORY_SLUGS,
   itemsByName,
 } from "@/data/services";
@@ -15,28 +14,6 @@ import {
 import { SCHEDULE } from "@/lib/constants";
 
 describe("Price tab slugs", () => {
-  it("accepts every real category slug", () => {
-    for (const slug of SERVICE_CATEGORY_SLUGS) {
-      expect(isServiceCategorySlug(slug)).toBe(true);
-    }
-  });
-
-  /**
-   * Regression: the homepage and services page both linked to
-   * `/preturi?tab=implant`, a slug that has never existed. The price page
-   * looked it up, found nothing, and rendered no table at all.
-   */
-  it("rejects 'implant', which linked to an empty price page", () => {
-    expect(isServiceCategorySlug("implant")).toBe(false);
-  });
-
-  it("rejects unknown, empty, and nullish values", () => {
-    expect(isServiceCategorySlug("nope")).toBe(false);
-    expect(isServiceCategorySlug("")).toBe(false);
-    expect(isServiceCategorySlug(null)).toBe(false);
-    expect(isServiceCategorySlug(undefined)).toBe(false);
-  });
-
   it("the declared slug list matches the actual category data", () => {
     expect([...SERVICE_CATEGORY_SLUGS].sort()).toEqual(
       serviceCategories.map((c) => c.slug).sort(),

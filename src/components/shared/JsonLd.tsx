@@ -1,4 +1,4 @@
-import { CLINIC, SCHEDULE } from "@/lib/constants";
+import { CLINIC, OPEN_DAYS } from "@/lib/constants";
 import { parsePrice, type ServiceItem } from "@/data/services";
 
 function safeJsonLd(data: Record<string, unknown>): string {
@@ -63,7 +63,7 @@ function buildOffers(items: ServiceItem[]) {
 }
 
 export function LocalBusinessJsonLd() {
-  const openingHours = SCHEDULE.filter((s) => s.open && s.close).map((s) => ({
+  const openingHours = OPEN_DAYS.map((s) => ({
     "@type": "OpeningHoursSpecification",
     dayOfWeek: `https://schema.org/${s.schemaDay}`,
     opens: s.open,
