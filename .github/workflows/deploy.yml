@@ -3,8 +3,11 @@ name: CI/CD
 on:
   push:
     branches: [main, v2site]
+  # v2site is what actually serves dentologia.ro; main is the old static site,
+  # frozen. Gating only PRs into main meant a PR into production ran no checks
+  # at all, while the branch nobody deploys was fully guarded.
   pull_request:
-    branches: [main]
+    branches: [main, v2site]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
