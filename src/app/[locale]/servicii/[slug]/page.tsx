@@ -86,7 +86,7 @@ export default async function ServiceDetailPage({
         name={page.h1}
         description={page.metaDescription}
         path={`/servicii/${page.slug}`}
-        offers={page.offers}
+        items={priceItemsFor(page)}
       />
       <FAQPageJsonLd items={page.faq} />
 

@@ -21,6 +21,47 @@ function JsonLdScript({ data }: JsonLdProps) {
   );
 }
 
+/**
+ * Price rows → schema.org offers, the single way this site prices anything for
+ * Google. Every emitter goes through here so a procedure cannot be quoted one
+ * figure on /servicii and a different one on /preturi.
+ *
+ * A row whose price cannot be read as a number is dropped rather than guessed
+ * at — a wrong price in structured data is worse than an absent one. Ranges
+ * become an `AggregateOffer`, and the currency comes from the row itself: the
+ * Spark aligners are priced in EUR, so a hardcoded "RON" would understate them
+ * by roughly a factor of five.
+ */
+function buildOffers(items: ServiceItem[]) {
+  return items.flatMap((item) => {
+    const parsed = parsePrice(item.price);
+    if (!parsed) return [];
+
+    const base = {
+      name: item.name,
+      priceCurrency: parsed.currency,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Dentist",
+        "@id": `${CLINIC.url}/#clinic`,
+        name: CLINIC.name,
+        url: CLINIC.url,
+      },
+    };
+
+    return [
+      parsed.kind === "single"
+        ? { "@type": "Offer", ...base, price: parsed.value }
+        : {
+            "@type": "AggregateOffer",
+            ...base,
+            lowPrice: parsed.min,
+            highPrice: parsed.max,
+          },
+    ];
+  });
+}
+
 export function LocalBusinessJsonLd() {
   const openingHours = SCHEDULE.filter((s) => s.open && s.close).map((s) => ({
     "@type": "OpeningHoursSpecification",
@@ -88,13 +129,16 @@ export function ServiceJsonLd({
   name,
   description,
   path,
-  offers,
+  items,
 }: {
   name: string;
   description: string;
   path: string;
-  offers: { name: string; price: string }[];
+  /** The same rows the page renders in its price table — never a parallel list. */
+  items: ServiceItem[];
 }) {
+  const offers = buildOffers(items);
+
   const data = {
     "@context": "https://schema.org",
     "@type": "MedicalProcedure",
@@ -116,15 +160,7 @@ export function ServiceJsonLd({
         addressCountry: CLINIC.address.country,
       },
     },
-    ...(offers.length > 0 && {
-      offers: offers.map((offer) => ({
-        "@type": "Offer",
-        name: offer.name,
-        price: offer.price,
-        priceCurrency: "RON",
-        availability: "https://schema.org/InStock",
-      })),
-    }),
+    ...(offers.length > 0 && { offers }),
   };
 
   return <JsonLdScript data={data} />;
@@ -162,11 +198,7 @@ export function FAQPageJsonLd({
   return <JsonLdScript data={data} />;
 }
 
-/**
- * An `OfferCatalog` of a price category. Rows whose price cannot be read as a
- * number are omitted rather than guessed at — a wrong price in structured data
- * is worse than an absent one.
- */
+/** An `OfferCatalog` of a price category. */
 export function OfferCatalogJsonLd({
   name,
   description,
@@ -178,33 +210,7 @@ export function OfferCatalogJsonLd({
   path: string;
   items: ServiceItem[];
 }) {
-  const offers = items.flatMap((item) => {
-    const parsed = parsePrice(item.price);
-    if (!parsed) return [];
-
-    const base = {
-      name: item.name,
-      priceCurrency: parsed.currency,
-      availability: "https://schema.org/InStock",
-      seller: {
-        "@type": "Dentist",
-        "@id": `${CLINIC.url}/#clinic`,
-        name: CLINIC.name,
-        url: CLINIC.url,
-      },
-    };
-
-    return [
-      parsed.kind === "single"
-        ? { "@type": "Offer", ...base, price: parsed.value }
-        : {
-            "@type": "AggregateOffer",
-            ...base,
-            lowPrice: parsed.min,
-            highPrice: parsed.max,
-          },
-    ];
-  });
+  const offers = buildOffers(items);
 
   const data = {
     "@context": "https://schema.org",

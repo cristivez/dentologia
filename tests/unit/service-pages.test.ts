@@ -87,10 +87,18 @@ describe("Service pages", () => {
     expect(rows).toHaveLength(2);
   });
 
-  it("Offer prices are bare numbers, as schema.org requires", () => {
+  it("every priceItemNames entry matches a real row in services.ts", () => {
+    // itemsByName drops names it cannot find, so a typo here would silently
+    // shrink both the rendered price table and the page's schema.org offers
+    // rather than failing. Both now derive from this list, so it has to be
+    // exact — check it loudly instead.
     for (const page of servicePages) {
-      for (const offer of page.offers) {
-        expect(offer.price, `${page.slug} → ${offer.name}`).toMatch(/^\d+$/);
+      const resolved = new Set(priceItemsFor(page).map((item) => item.name));
+      for (const name of page.priceItemNames) {
+        expect(
+          resolved.has(name),
+          `${page.slug} → "${name}" matches no row in services.ts`,
+        ).toBe(true);
       }
     }
   });

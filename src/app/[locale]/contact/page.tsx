@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { Phone, MessageCircle, MapPin, Clock } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -25,23 +26,31 @@ export default function ContactPage() {
         />
       </div>
 
-      {/* The facade, so patients recognise the door before they arrive. */}
-      <AnimatedSection delay={0.05}>
-        <figure className="mx-auto mb-12 max-w-4xl">
-          <Image
-            src="/photos/storefront.webp"
-            alt="Intrarea clinicii Dentologia, Strada General Iosif Teodorescu 2, Câmpulung Muscel"
-            width={1600}
-            height={900}
-            sizes="(min-width: 1024px) 896px, 100vw"
-            className="rounded-2xl border border-border object-cover"
-            priority
-          />
-          <figcaption className="mt-3 text-center text-sm text-muted">
-            Ne găsiți pe {CLINIC.address.street}, în {CLINIC.address.city}.
-          </figcaption>
-        </figure>
-      </AnimatedSection>
+      {/*
+        The facade, so patients recognise the door before they arrive.
+
+        This is the LCP element, so the entrance is CSS transform only — same
+        rule as the homepage hero. `AnimatedSection` would serialise
+        `opacity: 0` into the server HTML, and Chrome refuses to score an
+        opacity-0 subtree as LCP, which would pin the metric to full hydration
+        despite the preload.
+      */}
+      <figure
+        className="rise mx-auto mb-12 max-w-4xl"
+        style={{ "--rise-delay": "50ms" } as CSSProperties}
+      >
+        <Image
+          src="/photos/storefront.webp"
+          alt="Intrarea clinicii Dentologia, Strada General Iosif Teodorescu 2, Câmpulung Muscel"
+          width={1600}
+          height={900}
+          className="rounded-2xl border border-border object-cover"
+          priority
+        />
+        <figcaption className="mt-3 text-center text-sm text-muted">
+          Ne găsiți pe {CLINIC.address.street}, în {CLINIC.address.city}.
+        </figcaption>
+      </figure>
 
       {/* CTA Buttons */}
       <AnimatedSection delay={0.1}>

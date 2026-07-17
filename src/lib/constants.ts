@@ -38,6 +38,9 @@ export const GOOGLE_RATING = {
   count: 15,
 } as const;
 
+/** "5,0" — Romanian decimal comma. Prose and metadata must both read from here. */
+export const formattedRating = GOOGLE_RATING.value.toFixed(1).replace(".", ",");
+
 /** schema.org DayOfWeek enum. Google discards OpeningHoursSpecification that uses anything else. */
 export type SchemaDay =
   | "Monday"

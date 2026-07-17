@@ -2,7 +2,13 @@ import Image from "next/image";
 import { Phone, MapPin, Clock, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { AnimatedGroup, AnimatedItem } from "@/components/shared/AnimatedGroup";
-import { CLINIC, SCHEDULE, GOOGLE_RATING, formatHours } from "@/lib/constants";
+import {
+  CLINIC,
+  SCHEDULE,
+  GOOGLE_RATING,
+  formattedRating,
+  formatHours,
+} from "@/lib/constants";
 
 const navLinks = [
   { href: "/servicii", label: "Servicii" },
@@ -78,7 +84,7 @@ export function Footer() {
               className="mt-5 inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 transition-colors [@media(hover:hover)]:hover:border-primary"
             >
               <span className="font-bold text-foreground">
-                {GOOGLE_RATING.value.toFixed(1).replace(".", ",")}
+                {formattedRating}
               </span>
               <span
                 className="flex gap-0.5"

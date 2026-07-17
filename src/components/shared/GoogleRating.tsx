@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { CLINIC, GOOGLE_RATING } from "@/lib/constants";
+import { CLINIC, GOOGLE_RATING, formattedRating } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,7 +21,7 @@ export function GoogleRating({
     <div className={cn("flex flex-col items-center gap-2", className)}>
       <div className="flex items-center gap-3">
         <span className={cn("font-bold text-foreground", valueSize)}>
-          {GOOGLE_RATING.value.toFixed(1).replace(".", ",")}
+          {formattedRating}
         </span>
         <div className="flex flex-col gap-1">
           <div

@@ -21,12 +21,6 @@ export const SERVICE_PAGE_SLUGS = [
 
 export type ServicePageSlug = (typeof SERVICE_PAGE_SLUGS)[number];
 
-/** A `MedicalProcedure` offer. `price` must be a bare number — schema.org rejects "250 lei". */
-export type ServiceOffer = {
-  name: string;
-  price: string;
-};
-
 export type ServicePage = {
   slug: ServicePageSlug;
   /** Drives <h1>. Carries the city, because that is what people search for. */
@@ -36,11 +30,19 @@ export type ServicePage = {
   /** Shown under the h1. Two or three sentences, plain Romanian. */
   intro: string;
   sections: { heading: string; body: string }[];
-  /** Price rows pulled from services.ts by exact name. Never retyped here. */
+  /**
+   * Price rows pulled from services.ts by exact name. Never retyped here.
+   *
+   * These drive both the rendered price table and the page's schema.org
+   * offers. There used to be a parallel hand-typed `offers` array, which
+   * drifted: it quoted Google a flat 300 lei for a root canal the table
+   * showed as 300–500, and invented names ("Coroană zirconiu monolit") for
+   * rows the catalogue calls something else. If a price needs to appear here,
+   * add its row to services.ts and name it — do not restate the number.
+   */
   priceItemNames: readonly string[];
   /** Rendered when the clinic publishes no fixed price for the procedure. */
   priceNote?: string;
-  offers: ServiceOffer[];
   faq: { question: string; answer: string }[];
   relatedSlugs: readonly ServicePageSlug[];
   /** The price category this service belongs to, for the "see full prices" link. */
@@ -84,12 +86,6 @@ export const servicePages: ServicePage[] = [
     ],
     priceNote:
       "Prețul inserării implantului se stabilește la consultația de specialitate (100 lei), în funcție de caz. Prețurile de mai jos acoperă partea protetică — bontul și coroana montate pe implant.",
-    offers: [
-      { name: "Consultație de specialitate", price: "100" },
-      { name: "Element zirconiu implant", price: "1000" },
-      { name: "Element zirconiu + ceramică implant", price: "1700" },
-      { name: "Cimentare bont (tibase) implant", price: "100" },
-    ],
     faq: [
       {
         question: "Cât costă un implant dentar la Dentologia în Câmpulung?",
@@ -157,12 +153,6 @@ export const servicePages: ServicePage[] = [
       "Spark 20 / ambele arcade",
       "Spark Advance / ambele arcade",
     ],
-    offers: [
-      { name: "Consultație ortodontică", price: "100" },
-      { name: "Aparat dentar metalic (o arcadă)", price: "2700" },
-      { name: "Aparat autoligaturant (o arcadă)", price: "3200" },
-      { name: "Aparat autoligaturant Damon (o arcadă)", price: "4500" },
-    ],
     faq: [
       {
         question: "Cât costă un aparat dentar în Câmpulung?",
@@ -214,13 +204,6 @@ export const servicePages: ServicePage[] = [
       "Gutiere albire",
       "Pachet complet: Detartraj + Periaj + AirFlow",
       "Consultație de specialitate",
-    ],
-    offers: [
-      {
-        name: "Detartraj + Periaj + AirFlow + Albire cu gutiere",
-        price: "700",
-      },
-      { name: "Gutiere albire", price: "350" },
     ],
     faq: [
       {
@@ -277,11 +260,6 @@ export const servicePages: ServicePage[] = [
       "Sigilare dinte temporar",
       "Sigilare dinte definitiv",
     ],
-    offers: [
-      { name: "Detartraj", price: "150" },
-      { name: "Pachet complet: Detartraj + Periaj + AirFlow", price: "250" },
-      { name: "Fluorizare", price: "150" },
-    ],
     faq: [
       {
         question: "Cât costă un detartraj în Câmpulung?",
@@ -336,11 +314,6 @@ export const servicePages: ServicePage[] = [
       "Extracție monoradiculară",
       "Extracție pluriradiculară",
       "Reconstrucție dinte fracturat",
-    ],
-    offers: [
-      { name: "Tratament de urgență", price: "250" },
-      { name: "Consultație de urgență + pansament calmant", price: "250" },
-      { name: "Incizie + drenaj abces", price: "200" },
     ],
     faq: [
       {
@@ -397,12 +370,6 @@ export const servicePages: ServicePage[] = [
       "Coroană provizorie PMMA",
       "Cimentare coroană",
     ],
-    offers: [
-      { name: "Coroană zirconiu monolit", price: "900" },
-      { name: "Coroană zirconiu + ceramică", price: "1100" },
-      { name: "Coroană metalo-ceramică", price: "700" },
-      { name: "Cimentare coroană", price: "80" },
-    ],
     faq: [
       {
         question: "Cât costă o coroană dentară în Câmpulung?",
@@ -458,11 +425,6 @@ export const servicePages: ServicePage[] = [
       "Emax Ivoclar (fațete, punți, coroane)",
       "Inlay Emax Ivoclar",
       "Consultație de specialitate",
-    ],
-    offers: [
-      { name: "Fațetă Emax Ivoclar", price: "1800" },
-      { name: "Inlay Emax Ivoclar", price: "800" },
-      { name: "Consultație de specialitate", price: "100" },
     ],
     faq: [
       {
@@ -523,12 +485,6 @@ export const servicePages: ServicePage[] = [
       "Decapușonare",
       "Consultație de specialitate",
     ],
-    offers: [
-      { name: "Extracție monoradiculară", price: "150" },
-      { name: "Extracție pluriradiculară", price: "250" },
-      { name: "Extracție molar de minte", price: "400" },
-      { name: "Incizie + drenaj abces", price: "200" },
-    ],
     faq: [
       {
         question: "Cât costă o extracție dentară în Câmpulung?",
@@ -588,12 +544,6 @@ export const servicePages: ServicePage[] = [
       "Consultație de urgență + pansament calmant",
       "Drenaj endodontic",
     ],
-    offers: [
-      { name: "Tratament endodontic — dinte monoradicular", price: "250" },
-      { name: "Tratament endodontic — dinte pluriradicular", price: "300" },
-      { name: "Retratament — dinte monoradicular", price: "300" },
-      { name: "Drenaj endodontic", price: "100" },
-    ],
     faq: [
       {
         question: "Cât costă un tratament de canal în Câmpulung?",
@@ -651,12 +601,6 @@ export const servicePages: ServicePage[] = [
       "Proteză parțială acrilică",
       "Proteză parțială flexibilă",
       "Rebazare proteză",
-    ],
-    offers: [
-      { name: "Proteză totală acrilică", price: "2000" },
-      { name: "Proteză totală flexibilă", price: "2200" },
-      { name: "Proteză parțială acrilică", price: "1500" },
-      { name: "Rebazare proteză", price: "250" },
     ],
     faq: [
       {
@@ -717,12 +661,6 @@ export const servicePages: ServicePage[] = [
       "Obturație CIS",
       "Reconstrucție dinte fracturat",
     ],
-    offers: [
-      { name: "Obturație fizionomică mică", price: "200" },
-      { name: "Obturație fizionomică medie", price: "250" },
-      { name: "Obturație dinte frontal", price: "350" },
-      { name: "Obturație CIS", price: "150" },
-    ],
     faq: [
       {
         question: "Cât costă o plombă dentară în Câmpulung?",
@@ -780,11 +718,6 @@ export const servicePages: ServicePage[] = [
       "Sigilare dinte definitiv",
       "Fluorizare",
       "Detartraj",
-    ],
-    offers: [
-      { name: "Consultație de specialitate", price: "100" },
-      { name: "Sigilare dinte", price: "200" },
-      { name: "Fluorizare", price: "150" },
     ],
     faq: [
       {
