@@ -3,6 +3,19 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-04-01",
   "compatibility_flags": ["nodejs_compat"],
+  // Workers Logs. Off by default, which is why a flood of exceededResources
+  // errors (all of them .php scanner probes killed by the free-tier 10ms CPU
+  // cap) showed up as counts in analytics with no message behind them.
+  "observability": { "enabled": true },
+  // Workers Cache: Cloudflare returns the Worker's own cached response
+  // WITHOUT executing the Worker, which is the only caching mechanism that
+  // applies here — zone Cache Rules explicitly do not affect a Worker's
+  // responses. Next sends `s-maxage=31536000` on prerendered PAGES (but not
+  // on /sitemap.xml or /robots.txt, which send max-age=0, must-revalidate
+  // and so still re-invoke the Worker on every request),
+  // and the cache key includes the Worker version, so every deploy
+  // invalidates it automatically and there is no purge step to remember.
+  "cache": { "enabled": true },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
