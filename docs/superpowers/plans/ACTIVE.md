@@ -6,16 +6,32 @@ invisible to the loop and quietly never gets built.
 
 ## Caching
 
-- [ ] **`/sitemap.xml` and `/robots.txt` still bypass the edge cache.** Both
-      send `cache-control: public, max-age=0, must-revalidate`, so Cloudflare
-      stores the entry but revalidates against the Worker on every request —
-      `cf-cache-status: EXPIRED` where HTML pages return `HIT`. Measured on
-      production 2026-10-15 after the Workers Cache rollout (commit 9ba66ab).
-      Traffic: robots.txt ~24 hits/day, sitemap.xml ~12/day, both crawler-facing.
-      Fix: add an explicit `Cache-Control: public, s-maxage=3600` for those two
-      routes in `next.config.ts` `headers()`. Verify with
-      `curl -sD- https://dentologia.ro/robots.txt | grep -i cf-cache-status`
-      returning `HIT` on the second request.
+- [x] **`/robots.txt` now serves from the edge cache.** Fixed in next.config.ts
+      via `cloudflare-cdn-cache-control: public, s-maxage=3600` on a headers()
+      entry matching the three metadata routes. Verified on production
+      2026-10-16: `cf-cache-status: HIT` with `age: 23` across four consecutive
+      requests, while the client still receives Next's original
+      `max-age=0, must-revalidate` (Cloudflare consumes and strips the header).
+
+- [ ] **`/sitemap.xml` and `/manifest.webmanifest` still return `EXPIRED`**
+      despite the same fix that worked for `/robots.txt`. Established, so do
+      not re-derive: the compiled route regex in `.next/.../routes-manifest.json`
+      matched all three, and the dev server emits the header on all three
+      (`/servicii` correctly does not). Neither is a plain static asset — all
+      three live in the incremental cache plus server-functions — so the
+      asset-vs-Worker split is ruled out. Four consecutive requests are
+      consistently EXPIRED, so it is not propagation lag. The remaining
+      difference is content type (`text/plain` caches; `application/xml` and
+      the manifest type do not), which points at Cloudflare-side handling
+      rather than anything in this repo. Low value: ~12 hits/day on sitemap,
+      fewer on manifest. Next lever: a zone Cache Rule targeting those two
+      paths, or checking whether Cloudflare's default cacheable-extension
+      handling overrides the origin directive for those content types.
+
+- [ ] **Deployed Worker still carries the unescaped-dot version of the header
+      source.** The escape fix (`sitemap\.xml` etc.) is committed but ships
+      only on the next deploy. Harmless meanwhile: the over-matched paths 404,
+      and 404s carry `private, no-cache, no-store`.
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 
