@@ -26,10 +26,9 @@ export default worker;
 
 // Kept as in OpenNext's custom-worker template, so binding one of these
 // Durable Objects later does not fail the deploy on a missing export.
+// One line on purpose: @ts-ignore covers only the next line, and the error
+// lands on the module path.
+// prettier-ignore
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore same generated module as above
-export {
-  DOQueueHandler,
-  DOShardedTagCache,
-  BucketCachePurge,
-} from "./.open-next/worker.js";
+export { DOQueueHandler, DOShardedTagCache, BucketCachePurge } from "./.open-next/worker.js";
