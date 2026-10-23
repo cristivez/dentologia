@@ -39,7 +39,12 @@ invisible to the loop and quietly never gets built.
 
 ## Bot probes
 
-- [ ] PAUSED (2026-10-23: live WAF change, needs the owner's go) **Extend the
+- [x] DONE 2026-10-23: rule `ab5ee5723a9544efa5d3cdc19e6045a5` added via the
+      plugin:cloudflare:cloudflare-api connector (the other two credentials
+      403'd). Verified on production: 15 probe paths (/api, /ro/api/x,
+      /backup.zip, /dump.sql, /.htaccess, /x/.svn/entries, wlwmanifest, ...)
+      all 403 at the edge; all 18 pages and assets 200, www 200, /apidentar and
+      /nu-exista still reach Next's 404, /.well-known/* stays open. **Extend the
       zone WAF block rule to the probe paths the Worker filter now 404s.**
       worker.ts (commit fefeb43) answers /api, wp-* segments, dot-segments and
       server-side extensions without booting Next, but each probe still costs
@@ -55,10 +60,10 @@ invisible to the loop and quietly never gets built.
       "Block probe paths (mirrors worker.ts filter)", expression:
 
       ```
-          (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
-          ```
+              (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
+              ```
 
-          `.well-known` is excluded on purpose (certificate validation lives there).
+              `.well-known` is excluded on purpose (certificate validation lives there).
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 
