@@ -13,8 +13,11 @@ invisible to the loop and quietly never gets built.
       requests, while the client still receives Next's original
       `max-age=0, must-revalidate` (Cloudflare consumes and strips the header).
 
-- [ ] PAUSED (2026-10-23: next lever is a zone Cache Rule, a live Cloudflare
-      change that needs the owner's go) **`/sitemap.xml` and `/manifest.webmanifest` still return `EXPIRED`**
+- [x] RESOLVED by the 2026-10-23 deploy (version 8570a6b3): both now return
+      `cf-cache-status: HIT` with a rising `age` across three consecutive
+      requests, no Cache Rule needed. Not isolated which change did it — that
+      deploy shipped the escaped header source, the custom Worker entry and the
+      compatibility_date bump together. **`/sitemap.xml` and `/manifest.webmanifest` still return `EXPIRED`**
       despite the same fix that worked for `/robots.txt`. Established, so do
       not re-derive: the compiled route regex in `.next/.../routes-manifest.json`
       matched all three, and the dev server emits the header on all three
@@ -29,12 +32,21 @@ invisible to the loop and quietly never gets built.
       paths, or checking whether Cloudflare's default cacheable-extension
       handling overrides the origin directive for those content types.
 
-- [ ] PAUSED (2026-10-23: ships with the next `npm run deploy`, which hits
-      production and needs the owner's go; the bot-probe Worker entry rides the
-      same deploy) **Deployed Worker still carries the unescaped-dot version of the header
+- [x] Shipped in the 2026-10-23 deploy (version 8570a6b3). **Deployed Worker still carries the unescaped-dot version of the header
       source.** The escape fix (`sitemap\.xml` etc.) is committed but ships
       only on the next deploy. Harmless meanwhile: the over-matched paths 404,
       and 404s carry `private, no-cache, no-store`.
+
+## Bot probes
+
+- [ ] PAUSED (2026-10-23: live WAF change, needs the owner's go) **Extend the
+      zone WAF block rule to the probe paths the Worker filter now 404s.**
+      worker.ts (commit fefeb43) answers /api, wp-* segments, dot-segments and
+      server-side extensions without booting Next, but each probe still costs
+      a Worker invocation against the Free plan's 100k requests/day. Extending
+      the existing `*.php` rule would stop them at the edge with no invocation.
+      Keep the Worker filter as the backstop. Source: review of fefeb43,
+      altitude finding, skipped.
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 
