@@ -1,12 +1,25 @@
 {
   "name": "dentologia",
-  "main": ".open-next/worker.js",
-  "compatibility_date": "2025-04-01",
+  // Wraps .open-next/worker.js to 404 bot probes before Next.js boots.
+  "main": "worker.ts",
+  "compatibility_date": "2026-07-14",
   "compatibility_flags": ["nodejs_compat"],
   // Workers Logs. Off by default, which is why a flood of exceededResources
   // errors (all of them .php scanner probes killed by the free-tier 10ms CPU
   // cap) showed up as counts in analytics with no message behind them.
-  "observability": { "enabled": true },
+  // Spelled out to match the dashboard: logs on, every invocation sampled and
+  // persisted; traces off.
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    },
+    "traces": { "enabled": false }
+  },
   // Workers Cache: Cloudflare returns the Worker's own cached response
   // WITHOUT executing the Worker, which is the only caching mechanism that
   // applies here — zone Cache Rules explicitly do not affect a Worker's

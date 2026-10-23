@@ -13,7 +13,8 @@ invisible to the loop and quietly never gets built.
       requests, while the client still receives Next's original
       `max-age=0, must-revalidate` (Cloudflare consumes and strips the header).
 
-- [ ] **`/sitemap.xml` and `/manifest.webmanifest` still return `EXPIRED`**
+- [ ] PAUSED (2026-10-23: next lever is a zone Cache Rule, a live Cloudflare
+      change that needs the owner's go) **`/sitemap.xml` and `/manifest.webmanifest` still return `EXPIRED`**
       despite the same fix that worked for `/robots.txt`. Established, so do
       not re-derive: the compiled route regex in `.next/.../routes-manifest.json`
       matched all three, and the dev server emits the header on all three
@@ -28,19 +29,23 @@ invisible to the loop and quietly never gets built.
       paths, or checking whether Cloudflare's default cacheable-extension
       handling overrides the origin directive for those content types.
 
-- [ ] **Deployed Worker still carries the unescaped-dot version of the header
+- [ ] PAUSED (2026-10-23: ships with the next `npm run deploy`, which hits
+      production and needs the owner's go; the bot-probe Worker entry rides the
+      same deploy) **Deployed Worker still carries the unescaped-dot version of the header
       source.** The escape fix (`sitemap\.xml` etc.) is committed but ships
       only on the next deploy. Harmless meanwhile: the over-matched paths 404,
       and 404s carry `private, no-cache, no-store`.
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 
-- [ ] **frizerescu.ro and tomarhi.com still emit `Set-Cookie` on every HTML
+- [ ] PAUSED (2026-10-23: other repos, needs sessions opened there)
+      **frizerescu.ro and tomarhi.com still emit `Set-Cookie` on every HTML
       response**, so neither can be edge-cached — the same next-intl v4
       `localeCookie` default that cost dentologia all its caching. dentnaik.com
       sends none. Fix is the two-line change in commit 9ba66ab, applied in each
       repo. Needs a session opened in those projects.
-- [ ] **`.php` WAF block rule not yet deployed on frizerescu.ro, tomarhi.com,
+- [ ] PAUSED (2026-10-23: live WAF change on other zones, needs the owner's go)
+      **`.php` WAF block rule not yet deployed on frizerescu.ro, tomarhi.com,
       dentnaik.com** (~3,200 errors/week between them over 7 days). Rule:
       `(http.request.uri.path wildcard r"*.php")`, action Block. Lower priority
       than it looks — all three return 404 on `.php` rather than dentologia's
