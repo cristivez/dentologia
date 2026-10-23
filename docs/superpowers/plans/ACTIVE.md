@@ -47,6 +47,18 @@ invisible to the loop and quietly never gets built.
       the existing `*.php` rule would stop them at the edge with no invocation.
       Keep the Worker filter as the backstop. Source: review of fefeb43,
       altitude finding, skipped.
+      2026-10-23: the owner approved it, but neither the wrangler OAuth token
+      nor the Cloudflare API connector holds a rulesets/WAF write scope (both
+      return 10000 Authentication error). The live zone already has one custom
+      rule, "Block secret/CMS scanners" (.env, .git, .php, wp-*, xmlrpc, ...).
+      Add a SECOND rule, action Block, description
+      "Block probe paths (mirrors worker.ts filter)", expression:
+
+      ```
+          (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
+          ```
+
+          `.well-known` is excluded on purpose (certificate validation lives there).
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 
