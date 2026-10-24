@@ -60,10 +60,10 @@ invisible to the loop and quietly never gets built.
       "Block probe paths (mirrors worker.ts filter)", expression:
 
       ```
-                  (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
-                  ```
+                      (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
+                      ```
 
-                  `.well-known` is excluded on purpose (certificate validation lives there).
+                      `.well-known` is excluded on purpose (certificate validation lives there).
 
 - [ ] **Sync the "Block probe paths" WAF rule with worker.ts again.** Branch
       `fix/cf-404-workersdev` added `/Dockerfile`, `/docker-compose*` and
@@ -74,8 +74,23 @@ invisible to the loop and quietly never gets built.
       PROBE_SEGMENT):
 
       ```
-          or (http.request.uri.path wildcard r"*/dockerfile") or (http.request.uri.path wildcard r"*/dockerfile/*") or (http.request.uri.path wildcard r"*/docker-compose*") or (http.request.uri.path wildcard r"*/aws-exports.js") or (http.request.uri.path wildcard r"*/aws-exports.js/*")
-          ```
+              or (http.request.uri.path wildcard r"*/dockerfile") or (http.request.uri.path wildcard r"*/dockerfile/*") or (http.request.uri.path wildcard r"*/docker-compose*") or (http.request.uri.path wildcard r"*/aws-exports.js") or (http.request.uri.path wildcard r"*/aws-exports.js/*")
+              ```
+
+- [ ] **Harden the Worker's 404 allowlist (worker.ts + src/lib/knownRoute.ts).**
+      Review findings on commit 77e0586, skipped at commit time:
+      (1) anything not prerendered — a route.ts handler, an on-demand page, a
+      next.config redirect/rewrite — gets the Worker's 404, and only production
+      shows it because E2E never runs worker.ts; a build-time check (e.g. a
+      script that fails when routes-manifest has rewrites/redirects beyond the
+      trailing-slash one, or an app route outside the prerender manifest) would
+      catch it. (2) tests/unit/known-route.test.ts derives its manifest from the
+      sitemap, so it never checks real prerender-manifest keys; a post-build
+      check (curl every sitemap URL through `opennextjs-cloudflare preview`)
+      would. (3) worker.ts reads the 404 HTML and page list from .next/ but the
+      handler from .open-next/; a `next build` followed by a bare
+      `opennextjs-cloudflare deploy` mixes builds (`npm run deploy` always
+      rebuilds). (4) the 404's cache-control string is hand-copied from Next's.
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 
