@@ -60,12 +60,17 @@ invisible to the loop and quietly never gets built.
       "Block probe paths (mirrors worker.ts filter)", expression:
 
       ```
-                          (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
-                          ```
+                              (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
+                              ```
 
-                          `.well-known` is excluded on purpose (certificate validation lives there).
+                              `.well-known` is excluded on purpose (certificate validation lives there).
 
-- [ ] **Sync the "Block probe paths" WAF rule with worker.ts again.** Branch
+- [x] DONE 2026-10-24: appended via the plugin:cloudflare:cloudflare-api
+      connector (ruleset version 4). Verified on production: /Dockerfile,
+      /app/dockerfile, /docker-compose.prod, /docker-compose.yml,
+      /aws-exports.js, /src/aws-exports.js all 403; pages, www and assets 200;
+      /.well-known open; /dockerfiles-guide still reaches Next's 404.
+      **Sync the "Block probe paths" WAF rule with worker.ts again.** Branch
       `fix/cf-404-workersdev` added `/Dockerfile`, `/docker-compose*` and
       `/aws-exports.js` (any segment, case-insensitive) to src/lib/botProbe.ts.
       The live rule `ab5ee5723a9544efa5d3cdc19e6045a5` was left untouched on
@@ -74,8 +79,8 @@ invisible to the loop and quietly never gets built.
       PROBE_SEGMENT):
 
       ```
-                  or (http.request.uri.path wildcard r"*/dockerfile") or (http.request.uri.path wildcard r"*/dockerfile/*") or (http.request.uri.path wildcard r"*/docker-compose*") or (http.request.uri.path wildcard r"*/aws-exports.js") or (http.request.uri.path wildcard r"*/aws-exports.js/*")
-                  ```
+                      or (http.request.uri.path wildcard r"*/dockerfile") or (http.request.uri.path wildcard r"*/dockerfile/*") or (http.request.uri.path wildcard r"*/docker-compose*") or (http.request.uri.path wildcard r"*/aws-exports.js") or (http.request.uri.path wildcard r"*/aws-exports.js/*")
+                      ```
 
 - [ ] **Harden the Worker's 404 allowlist (worker.ts + src/lib/knownRoute.ts).**
       Review findings on commit 77e0586, skipped at commit time:
