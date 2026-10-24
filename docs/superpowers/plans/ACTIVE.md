@@ -60,10 +60,22 @@ invisible to the loop and quietly never gets built.
       "Block probe paths (mirrors worker.ts filter)", expression:
 
       ```
-              (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
-              ```
+                  (http.request.uri.path wildcard r"/api") or (http.request.uri.path wildcard r"/api/*") or (http.request.uri.path wildcard r"/ro/api") or (http.request.uri.path wildcard r"/ro/api/*") or (http.request.uri.path wildcard r"/en/api") or (http.request.uri.path wildcard r"/en/api/*") or (http.request.uri.path wildcard r"*wlwmanifest*") or (http.request.uri.path wildcard r"*/wordpress*") or (http.request.uri.path wildcard r"*/cgi-bin*") or (http.request.uri.path wildcard r"*phpmyadmin*") or (http.request.uri.path.extension in {"phtml" "asp" "aspx" "jsp" "cgi" "pl" "ini" "sql" "bak" "old" "swp" "zip" "tar" "gz" "tgz" "rar" "7z" "log" "yml" "yaml" "cfg" "conf"}) or ((http.request.uri.path wildcard r"*/.*") and not (http.request.uri.path wildcard r"/.well-known/*"))
+                  ```
 
-              `.well-known` is excluded on purpose (certificate validation lives there).
+                  `.well-known` is excluded on purpose (certificate validation lives there).
+
+- [ ] **Sync the "Block probe paths" WAF rule with worker.ts again.** Branch
+      `fix/cf-404-workersdev` added `/Dockerfile`, `/docker-compose*` and
+      `/aws-exports.js` (any segment, case-insensitive) to src/lib/botProbe.ts.
+      The live rule `ab5ee5723a9544efa5d3cdc19e6045a5` was left untouched on
+      purpose (owner's rule for that session). Append to its expression
+      (`wildcard` is case-insensitive; these match whole segments, like
+      PROBE_SEGMENT):
+
+      ```
+          or (http.request.uri.path wildcard r"*/dockerfile") or (http.request.uri.path wildcard r"*/dockerfile/*") or (http.request.uri.path wildcard r"*/docker-compose*") or (http.request.uri.path wildcard r"*/aws-exports.js") or (http.request.uri.path wildcard r"*/aws-exports.js/*")
+          ```
 
 ## Other sites (frizerescu, tomarhi, dentnaik)
 

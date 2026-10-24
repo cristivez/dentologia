@@ -33,9 +33,12 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  // Keep the workers.dev URL alive alongside the custom domains — declaring
-  // routes disables it by default, which silently killed the preview link.
-  "workers_dev": true,
+  // Served only on the custom domains below, never on *.workers.dev or on
+  // per-version preview URLs. Both must stay spelled out: a deploy applies
+  // whatever this file says (version 19ab7cc0 re-enabled workers.dev from the
+  // old `true` here), and leaving either unset re-enables it too.
+  "workers_dev": false,
+  "preview_urls": false,
   // Production domains — attached as Worker custom domains.
   "routes": [
     { "pattern": "dentologia.ro", "custom_domain": true },

@@ -15,9 +15,10 @@
 
 const PROBE_PREFIX = /^(\/(ro|en))?\/api(\/|$)/i;
 
-// WordPress, admin panels, CGI, and dot-segments (/.env, /.git/config).
+// WordPress, admin panels, CGI, dot-segments (/.env, /.git/config), and
+// leaked build/deploy files (/Dockerfile, /docker-compose.prod, /aws-exports.js).
 const PROBE_SEGMENT =
-  /(^|\/)(wp-[^/]*|wordpress|xmlrpc[^/]*|wlwmanifest[^/]*|cgi-bin|phpmyadmin|\.[^/]+)(\/|$)/i;
+  /(^|\/)(wp-[^/]*|wordpress|xmlrpc[^/]*|wlwmanifest[^/]*|cgi-bin|phpmyadmin|dockerfile|docker-compose[^/]*|aws-exports\.js|\.[^/]+)(\/|$)/i;
 
 const PROBE_EXTENSION =
   /\.(php\d?|phtml|asp|aspx|jsp|cgi|pl|env|ini|sql|bak|old|swp|zip|tar|gz|tgz|rar|7z|log|ya?ml|cfg|conf)\/?$/i;

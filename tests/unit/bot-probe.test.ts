@@ -22,6 +22,13 @@ describe("isBotProbe", () => {
     "/shell.php/",
     "/backup.zip",
     "/config.yml",
+    "/Dockerfile",
+    "/app/Dockerfile",
+    "/docker-compose",
+    "/docker-compose.prod",
+    "/docker-compose.override.yml",
+    "/aws-exports.js",
+    "/src/aws-exports.js",
   ])("flags %s", (path) => {
     expect(isBotProbe(path)).toBe(true);
   });
