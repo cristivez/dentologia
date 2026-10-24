@@ -42,6 +42,13 @@ describe("isKnownRoute", () => {
     expect(isKnownRoute(path, PAGES)).toBe(false);
   });
 
+  it("handles a long run of slashes in linear time", () => {
+    const start = performance.now();
+    expect(isKnownRoute("/".repeat(50_000) + "x", PAGES)).toBe(false);
+    expect(isKnownRoute("/contact" + "/".repeat(50_000), PAGES)).toBe(true);
+    expect(performance.now() - start).toBeLessThan(50);
+  });
+
   // Mirrors what the build emits: every sitemap URL, locale-prefixed, is a
   // manifest key. If the sitemap and the unprefixing logic ever disagree,
   // worker.ts would 404 a real page and only production would show it.

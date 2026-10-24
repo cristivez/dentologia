@@ -26,7 +26,11 @@ export function isKnownRoute(
   pages: ReadonlySet<string>,
 ): boolean {
   if (pathname.startsWith("/_next/")) return true;
-  const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  // A loop, not /\/+$/: that regex backtracks quadratically on a long run of
+  // slashes, and the path is attacker-controlled.
+  let end = pathname.length;
+  while (end > 1 && pathname[end - 1] === "/") end--;
+  const path = pathname.slice(0, end);
   const prefix = `/${routing.defaultLocale}`;
   return pages.has(path) || pages.has(path === "/" ? prefix : prefix + path);
 }

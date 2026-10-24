@@ -14,6 +14,7 @@
     "preview": "opennextjs-cloudflare build && wrangler dev",
     "predeploy": "node scripts/lighthouse-gate.mjs",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "sonar": "sonar-scanner",
     "prepare": "husky"
   },
   "lint-staged": {

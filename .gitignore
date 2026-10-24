@@ -43,3 +43,6 @@ next-env.d.ts
 
 # lighthouse pre-deploy gate output
 .lighthouse/
+
+# SonarQube scanner working dir
+.scannerwork/
