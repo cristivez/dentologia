@@ -73,4 +73,30 @@ test.describe("Phase 6 — Error Pages", () => {
     });
     expect(response?.status()).toBe(404);
   });
+
+  // Unknown URLs used to get Next's bare English default ("This page could not
+  // be found") because only notFound() calls inside [locale] reach the styled
+  // page. The root not-found must carry the site: Romanian copy, header, footer.
+  test("404 page is the Romanian site page, not Next's default", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/nonexistent-page-xyz", { waitUntil: "networkidle" });
+    await expect(page.locator("html")).toHaveAttribute("lang", "ro");
+    await expect(page.getByText("Pagina nu a fost găsită.")).toBeVisible();
+    await expect(page.getByText("This page could not be found")).toHaveCount(0);
+    await expect(page.locator("header")).toBeVisible();
+    await expect(page.locator("footer")).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Înapoi acasă" }),
+    ).toHaveAttribute("href", "/");
+    await expect(page).toHaveTitle(/Pagina nu a fost găsită/);
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
+    const critical = results.violations.filter(
+      (v) => v.impact === "critical" || v.impact === "serious",
+    );
+    expect(critical).toHaveLength(0);
+  });
 });

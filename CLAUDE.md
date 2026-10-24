@@ -66,7 +66,7 @@ Dental clinic website for Dentologia in Câmpulung Muscel, Romania. Multi-page N
 src/
 ├── app/
 │   ├── [locale]/           # i18n dynamic route
-│   │   ├── layout.tsx      # Main layout (font, providers, header, footer, FAB, cookie, JSON-LD)
+│   │   ├── layout.tsx      # Locale layout: metadata, static params, SiteShell + JSON-LD
 │   │   ├── page.tsx        # Homepage (Hero)
 │   │   ├── servicii/       # Services page (3 cards)
 │   │   ├── preturi/        # Prices page (7 tabs + search, client component)
@@ -78,12 +78,13 @@ src/
 │   │   └── not-found.tsx   # 404 page
 │   ├── layout.tsx          # Root layout (passthrough)
 │   ├── global-error.tsx    # Global error boundary
+│   ├── not-found.tsx       # Romanian 404 for unknown URLs (SiteShell; static, served by worker.ts)
 │   ├── sitemap.ts          # Dynamic sitemap
 │   ├── robots.ts           # Robots.txt
 │   └── manifest.ts         # PWA manifest
 ├── components/
 │   ├── ui/                 # Primitives: Button, Card, Container, SectionHeading
-│   ├── layout/             # Header, Footer
+│   ├── layout/             # SiteShell (html, font, providers, header, footer, FAB), Header, Footer
 │   └── shared/             # AnimatedSection/Group, Parallax, FloatingContactFAB, MotionProvider, GoogleRating, PriceTable/Tabs, CloudflareAnalytics, JsonLd
 ├── data/                   # Static data: services.ts, servicePages.ts, faq.ts, blogPosts.ts, team.ts, reviews.ts
 ├── hooks/                  # useScrollDirection, useIsMobile, usePrefersReducedMotion
